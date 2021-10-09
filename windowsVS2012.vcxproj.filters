@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="src\Windows\ofAppWindowsProxy.cpp">
+      <Filter>src\Windows</Filter>
+    </ClCompile>
+    <ClCompile Include="src\main.cpp">
+      <Filter>src\Main</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\ofDefaultApp.cpp">
+      <Filter>src\Apps</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\ofShem.cpp">
+      <Filter>src\Apps</Filter>
+    </ClCompile>
+    <ClCompile Include="src\App\BaseApp.cpp">
+      <Filter>src\Apps</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofApp.cpp">
+      <Filter>src\Manager</Filter>
+    </ClCompile>
+    <ClCompile Include="src\ofAppEvent.cpp">
+      <Filter>src\Manager</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="src">
+      <UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Windows">
+      <UniqueIdentifier>{4cdae057-278e-43a5-8c7c-b3f8f9e92609}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Main">
+      <UniqueIdentifier>{0c1ac439-bbff-4552-9ce8-c783d435c5c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Apps">
+      <UniqueIdentifier>{6629a28f-b6fe-4adc-a50d-f29beaca0e1e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\Manager">
+      <UniqueIdentifier>{e3738623-1ca2-43d6-b3c8-1f1b182be893}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Windows\ofAppWindowsProxy.h">
+      <Filter>src\Windows</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\ofShem.h">
+      <Filter>src\Apps</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\ofDefaultApp.h">
+      <Filter>src\Apps</Filter>
+    </ClInclude>
+    <ClInclude Include="src\App\BaseApp.h">
+      <Filter>src\Apps</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofAppEvent.h">
+      <Filter>src\Manager</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ofApp.h">
+      <Filter>src\Manager</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="windowsVS2012.rc" />
+  </ItemGroup>
+</Project>
