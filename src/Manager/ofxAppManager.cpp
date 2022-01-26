@@ -16,7 +16,6 @@ ofxAppManager::~ofxAppManager() {
 
 //--------------------------------------------------------------
 void ofxAppManager::setup(){
-    
     loadApp("ofApp");
 }
 
@@ -54,7 +53,7 @@ void ofxAppManager::killApp() {
         delete (ofApp *)app; // casting so we cleanup all memory for ofApp and parent ofBaseApp.
     } else {
         delete app; // this is still critical!! Leaking memory!! You must cast to correct object type!
-        ofLog(OF_LOG_ERROR, "ofxAppManager::killApp(). Memory Leak! Must delete object of correct class type!");
+        ofLogError("ofxAppManager::killApp()") << "Memory Leak! Must delete object of correct class type!";
     }
     app = NULL;
 }

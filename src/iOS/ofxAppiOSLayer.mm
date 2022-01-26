@@ -24,8 +24,9 @@ void ofxAppiOSLayer::draw(){
 
 //--------------------------------------------------------------
 void ofxAppiOSLayer::exit(){
-    manager->exit();
+    
     if(manager) {
+        manager->exit();
         delete manager;
         manager = NULL;
     }
@@ -82,4 +83,8 @@ void ofxAppiOSLayer::setDelegate(id delegate) {
 
 void ofxAppiOSLayer::clearDelegate() {
     delegate = nil;
+}
+
+void ofxAppiOSLayer::gameControllerEvent(GameControllerEvent & event) {
+    
 }

@@ -34,6 +34,8 @@ public:
     void gotMemoryWarning();
     void deviceOrientationChanged(int newOrientation);
     
+    void gameControllerEvent(GameControllerEvent & event);
+    
     void setDelegate(id delegate);
     void clearDelegate();
     // variables

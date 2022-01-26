@@ -35,11 +35,6 @@
 }
 
 //-------------------------------------------------------------- iOS6.
-#ifdef __IPHONE_6_0
-- (NSUInteger)supportedInterfaceOrientations {
-    return UIInterfaceOrientationMaskLandscapeLeft;
-}
-#endif
 
 - (BOOL)shouldAutorotate {
     return YES;

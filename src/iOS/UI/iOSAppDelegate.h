@@ -3,6 +3,8 @@
 // Created by Daniel Rosser on 25/05/2014.
 //--------------------------------------------------------------
 #import "ofxiOSAppDelegate.h"
+#import <GLKit/GLKit.h>
+
 
 @interface iOSAppDelegate : ofxiOSAppDelegate {
     //

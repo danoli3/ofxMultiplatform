@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="19529" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="HXy-lv-PV7">
+    <device id="ipad10_9rounded" orientation="portrait" layout="fullscreen" appearance="light"/>
+    <dependencies>
+        <deployment identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="19519"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Initial View Controller-->
+        <scene sceneID="HUQ-cW-k2X">
+            <objects>
+                <viewController storyboardIdentifier="InitialViewController" id="HXy-lv-PV7" userLabel="Initial View Controller" customClass="InitialViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="4DJ-q2-Bsk"/>
+                        <viewControllerLayoutGuide type="bottom" id="7Rp-z3-SjB"/>
+                    </layoutGuides>
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="fVi-GZ-E5C">
+                        <rect key="frame" x="0.0" y="0.0" width="820" height="1180"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <imageView userInteractionEnabled="NO" contentMode="center" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="mSd-ni-fNv">
+                                <rect key="frame" x="155" y="251" width="289" height="98"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" secondItem="mSd-ni-fNv" secondAttribute="height" multiplier="289:98" id="K2i-SH-6k1"/>
+                                </constraints>
+                            </imageView>
+                        </subviews>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="mSd-ni-fNv" firstAttribute="centerX" secondItem="fVi-GZ-E5C" secondAttribute="centerX" id="APs-3i-0kU"/>
+                            <constraint firstItem="mSd-ni-fNv" firstAttribute="centerY" secondItem="fVi-GZ-E5C" secondAttribute="centerY" id="yFv-wT-fII"/>
+                        </constraints>
+                    </view>
+                    <connections>
+                        <outlet property="view" destination="fVi-GZ-E5C" id="3j8-Qp-GVP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jws-rV-Ucy" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-556" y="1089"/>
+        </scene>
+        <!--iOS App View Controller-->
+        <scene sceneID="AMp-mO-lhb">
+            <objects>
+                <viewController storyboardIdentifier="iOSAppViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tK7-OU-lgx" customClass="iOSAppViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="64M-ER-nv0"/>
+                        <viewControllerLayoutGuide type="bottom" id="BEl-sD-wYU"/>
+                    </layoutGuides>
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="iFh-Yb-HC4">
+                        <rect key="frame" x="0.0" y="0.0" width="820" height="1180"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" updatesFrequently="YES"/>
+                        </accessibility>
+                    </view>
+                    <nil key="simulatedStatusBarMetrics"/>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                    <connections>
+                        <outlet property="view" destination="iFh-Yb-HC4" id="sDx-Jp-dl2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="bHK-xA-mZc" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="187" y="306"/>
+        </scene>
+        <!--iOS AppGLK View Controller-->
+        <scene sceneID="rDu-WO-171">
+            <objects>
+                <viewController storyboardIdentifier="iOSAppGLKViewController" id="1Za-ci-sNC" customClass="iOSAppGLKViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="9CW-wl-LYB"/>
+                        <viewControllerLayoutGuide type="bottom" id="5WC-pU-dAJ"/>
+                    </layoutGuides>
+                    <view key="view" multipleTouchEnabled="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="D8z-Dx-7hM">
+                        <rect key="frame" x="0.0" y="0.0" width="820" height="1180"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <accessibility key="accessibilityConfiguration">
+                            <accessibilityTraits key="traits" updatesFrequently="YES"/>
+                        </accessibility>
+                    </view>
+                    <nil key="simulatedTopBarMetrics"/>
+                    <nil key="simulatedBottomBarMetrics"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="C0L-5a-d6g" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="998" y="156"/>
+        </scene>
+    </scenes>
+</document>

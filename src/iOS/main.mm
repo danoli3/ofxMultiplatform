@@ -5,27 +5,32 @@
 #include "ofMain.h"
 #include "ofAppiOSWindow.h"
 #include "ofxAppiOSLayer.h"
-
+#include "iOSAppDelegate.h"
 #include <stdio.h>
 
-#if __IPHONE_OS_VERSION_MAX_ALLOWED >= __IPHONE_8_0
-FILE* fopen$UNIX2003(const char* filename, const char* mode);
-size_t fwrite$UNIX2003(const void* ptr, size_t size, size_t nitems, FILE* stream);
-
-FILE* fopen$UNIX2003(const char* filename, const char* mode) {
-    return fopen(filename, mode);
-}
-
-size_t fwrite$UNIX2003(const void* ptr, size_t size, size_t nitems, FILE* stream) {
-    return fwrite(ptr, size, nitems, stream);
-}
-#endif
-
 int main(){
-	ofAppiOSWindow * window = new ofAppiOSWindow();
-    window->enableRendererES2();
-    window->enableRetina();
     
-	ofSetupOpenGL(window, 1024, 768, OF_FULLSCREEN);
-    window->startAppWithDelegate("iOSAppDelegate");
+    ofiOSWindowSettings settings;
+    settings.enableMultiTouch = true;
+    ofxiOSRendererType rendererType = ofxiOSRendererType::OFXIOS_RENDERER_ES2;
+    settings.enableRetina = true; // enables retina resolution if the device supports it.
+    settings.enableDepth = true; // enables depth buffer for 3d drawing.
+    //settings.windowControllerType = ofxiOSWindowControllerType::CORE_ANIMATION; // old way
+    settings.windowControllerType = ofxiOSWindowControllerType::GL_KIT; // Window Controller Type
+    settings.colorType = ofxiOSRendererColorFormat::RGBA8888; // color format used default RGBA8888
+    settings.depthType = ofxiOSRendererDepthFormat::DEPTH_NONE; // depth format (16/24) if depth enabled
+    settings.stencilType = ofxiOSRendererStencilFormat::STENCIL_NONE; // stencil mode
+    
+    settings.enableHardwareOrientation = true; // enables native view orientation.
+    settings.enableHardwareOrientationAnimation = true; // enables native orientation changes to be animated.
+    settings.glesVersion = rendererType; // type of renderer to use, ES1, ES2, etc.
+//    settings.setupOrientation = OF_ORIENTATION_90_LEFT;
+
+    ofAppiOSWindow * window = (ofAppiOSWindow *)(ofCreateWindow(settings).get());
+    bool bUseNative = true;
+    if (bUseNative){
+        window->startAppWithDelegate("iOSAppDelegate");
+    } else {
+        return ofRunApp(new ofxAppiOSLayer);
+    }
 }

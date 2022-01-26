@@ -7,6 +7,7 @@
 #include "ofMain.h"
 #include "ofxMultiPlatformEvent.h"
 #include "ofxAppGlobals.h"
+#include "GameControllerEvent.h"
 
 // ----------------
 // Implement your classes of this type to get access to touch events!
@@ -28,6 +29,8 @@ public:
     virtual void touchUp(int x, int y, int id){};
     virtual void touchDoubleTap(int x, int y, int id){};
     virtual void touchCancelled(int x, int y, int id){};
+    
+    virtual void gameControllerEvent(GameControllerEvent & event) {};
     
 //-------  Other ofBaseApp Virtual Functions which can be Implemented in inheriting classes
 //    virtual void setup(ofEventArgs & args);
@@ -53,7 +56,7 @@ protected:
 };
 
 inline string ofxBaseApp::getClassName() {
-    ofLog(OF_LOG_WARNING, "ofxBaseApp::getClassName. Needs to be implemented in child!");
+    ofLogWarning("ofxBaseApp") << "getClassName. Needs to be implemented in child!";
     return "";
 }
 
