@@ -1,146 +1,158 @@
 #include "ofxAppWindowsLayer.h"
 
-//--------------------------------------------------------------
-void ofxAppWindowsLayer::setup(){
-    ofSetOrientation(OF_ORIENTATION_DEFAULT);
-    ofAddListener(ofAppEvent::events, this, &ofxAppWindowsLayer::triggerEvent);
-    
-    app = new ofMainApp();
-    app->setup();
-}
+#if defined(_WIN64) || defined(_WIN32)
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::update(){
-    app->update();
-}
+void ofxAppWindowsLayer::setup() {
 
-//--------------------------------------------------------------
-void ofxAppWindowsLayer::draw(){
-	app->draw();
-}
+	ofAddListener(ofxMultiPlatformEvent::events, this, &ofxAppWindowsLayer::triggerEvent);
 
-//--------------------------------------------------------------
-void ofxAppWindowsLayer::exit(){
-    app->exit();
-    ofRemoveListener(ofAppEvent::events, this, &ofxAppWindowsLayer::triggerEvent);
-    
-    if(app != NULL) {
-        delete app;
-        app = NULL;
-    }
+	ofSetOrientation(OF_ORIENTATION_DEFAULT);
+
+	ofLog(OF_LOG_NOTICE, "ofxAppWindowsLayer:setup ");
+	ofLog(OF_LOG_NOTICE, "ofGetScreenWidth: " + ofToString(ofGetScreenWidth()));
+	ofLog(OF_LOG_NOTICE, "ofGetScreenHeight: " + ofToString(ofGetScreenHeight()));
+	ofLog(OF_LOG_NOTICE, "ofGetWidth: " + ofToString(ofGetWidth()));
+	ofLog(OF_LOG_NOTICE, "ofGetHeight: " + ofToString(ofGetHeight()));
+
+	manager = new ofxAppManager();
+	manager->setup();
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::touchDown(ofTouchEventArgs & touch){
-    app->touchDown(touch.x, touch.y, touch.id);
+void ofxAppWindowsLayer::update() {
+	if (manager != nullptr)
+		manager->update();
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::touchMoved(ofTouchEventArgs & touch){
-    app->touchMoved(touch.x, touch.y, touch.id);
+void ofxAppWindowsLayer::draw() {
+	if (manager != nullptr)
+		manager->draw();
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::touchUp(ofTouchEventArgs & touch){
-    app->touchUp(touch.x, touch.y, touch.id);
+void ofxAppWindowsLayer::exit() {
+	if (manager != nullptr)
+		manager->exit();
+	ofRemoveListener(ofxMultiPlatformEvent::events, this, &ofxAppWindowsLayer::triggerEvent);
+
+	if (manager != nullptr) {
+		delete manager;
+		manager = nullptr;
+	}
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::touchDoubleTap(ofTouchEventArgs & touch){
-    app->touchDoubleTap(touch.x, touch.y, touch.id);
+void ofxAppWindowsLayer::touchDown(ofTouchEventArgs & touch) {
+	if (manager != nullptr)
+		manager->touchDown(touch.x, touch.y, touch.id);
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::touchCancelled(ofTouchEventArgs & touch){
-    app->touchCancelled(touch.x, touch.y, touch.id);
+void ofxAppWindowsLayer::touchMoved(ofTouchEventArgs & touch) {
+	if (manager != nullptr)
+		manager->touchMoved(touch.x, touch.y, touch.id);
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::lostFocus(){
-
+void ofxAppWindowsLayer::touchUp(ofTouchEventArgs & touch) {
+	if (manager != nullptr)
+		manager->touchUp(touch.x, touch.y, touch.id);
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::gotFocus(){
-
+void ofxAppWindowsLayer::touchDoubleTap(ofTouchEventArgs & touch) {
+	if (manager != nullptr)
+		manager->touchDoubleTap(touch.x, touch.y, touch.id);
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::gotMemoryWarning(){
-
+void ofxAppWindowsLayer::touchCancelled(ofTouchEventArgs & touch) {
+	if (manager != nullptr)
+		manager->touchCancelled(touch.x, touch.y, touch.id);
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::deviceOrientationChanged(int newOrientation){
-
-}
-
-void ofxAppWindowsLayer::triggerEvent(ofAppEvent &e) {
-    // manage event for Windows.
+void ofxAppWindowsLayer::lostFocus() {
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::keyPressed(int key){
-    if(app != NULL) {
-        app->keyPressed(key);
-    }
-
+void ofxAppWindowsLayer::gotFocus() {
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::keyReleased(int key){
-    if(app != NULL) {
-        app->keyReleased(key);
-    }
+void ofxAppWindowsLayer::gotMemoryWarning() {
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::mouseMoved(int x, int y){
-    if(app != NULL) {
-        app->mouseMoved(x, y);
-    }
+void ofxAppWindowsLayer::deviceOrientationChanged(int newOrientation) {
+}
+
+void ofxAppWindowsLayer::triggerEvent(ofxMultiPlatformEvent & e) {
+	// manage event for Windows.
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::mousePressed(int x, int y, int button){
-    if(app != NULL) {
-        app->mousePressed(x, y, button);
-    }
+void ofxAppWindowsLayer::keyPressed(int key) {
+	if (manager != nullptr) {
+		manager->keyPressed(key);
+	}
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::mouseDragged(int x, int y, int button){
-    if(app != NULL) {
-        app->mouseDragged(x, y, button);
-    }
+void ofxAppWindowsLayer::keyReleased(int key) {
+	if (manager != nullptr) {
+		manager->keyReleased(key);
+	}
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::mouseReleased(int x, int y, int button){
-    if(app != NULL) {
-        app->mouseReleased(x, y, button);
-    }
+void ofxAppWindowsLayer::mouseMoved(int x, int y) {
+	if (manager != nullptr) {
+		manager->mouseMoved(x, y);
+	}
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::windowResized(int w, int h){
-    if(app != NULL) {
-        app->windowResized(w, h);
-    }
+void ofxAppWindowsLayer::mousePressed(int x, int y, int button) {
+	if (manager != nullptr) {
+		manager->mousePressed(x, y, button);
+	}
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::gotMessage(ofMessage msg){
-    if(app != NULL) {
-        app->gotMessage(msg);
-    }
+void ofxAppWindowsLayer::mouseDragged(int x, int y, int button) {
+	if (manager != nullptr) {
+		manager->mouseDragged(x, y, button);
+	}
 }
 
 //--------------------------------------------------------------
-void ofxAppWindowsLayer::dragEvent(ofDragInfo dragInfo){
-    if(app != NULL) {
-        app->dragEvent(dragInfo);
-    }
+void ofxAppWindowsLayer::mouseReleased(int x, int y, int button) {
+	if (manager != nullptr) {
+		manager->mouseReleased(x, y, button);
+	}
 }
 
+//--------------------------------------------------------------
+void ofxAppWindowsLayer::windowResized(int w, int h) {
+	if (manager != nullptr) {
+		manager->windowResized(w, h);
+	}
+}
 
+//--------------------------------------------------------------
+void ofxAppWindowsLayer::gotMessage(ofMessage msg) {
+	if (manager != nullptr) {
+		manager->gotMessage(msg);
+	}
+}
+
+//--------------------------------------------------------------
+void ofxAppWindowsLayer::dragEvent(ofDragInfo dragInfo) {
+	if (manager != nullptr) {
+		manager->dragEvent(dragInfo);
+	}
+}
+#endif

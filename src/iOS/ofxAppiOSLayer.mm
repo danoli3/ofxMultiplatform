@@ -5,6 +5,8 @@
 
 #include "ofxAppiOSLayer.h"
 
+#if defined(TARGET_OS_IOS)
+
 //--------------------------------------------------------------
 void ofxAppiOSLayer::setup(){
     ofSetOrientation(OF_ORIENTATION_DEFAULT);
@@ -30,6 +32,8 @@ void ofxAppiOSLayer::exit(){
         delete manager;
         manager = NULL;
     }
+    
+    ofRemoveListener(ofxMultiPlatformEvent::events, this, &ofxAppiOSLayer::triggerEvent);
 }
 
 //--------------------------------------------------------------
@@ -88,3 +92,16 @@ void ofxAppiOSLayer::clearDelegate() {
 void ofxAppiOSLayer::gameControllerEvent(GameControllerEvent & event) {
     
 }
+
+void ofxAppiOSLayer::triggerEvent(ofxMultiPlatformEvent &e) {
+    // manage event for iOS.
+
+    if(e.packetID == 101) {
+        if(delegate != nil) {
+            [delegate launchPlayVideo:@"video"];
+        }
+    }
+    
+}
+
+#endif

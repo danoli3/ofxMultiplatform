@@ -3,6 +3,8 @@
 #ifndef __ofxAppLinuxLayer_h__
 #define __ofxAppLinuxLayer_h__
 
+#if defined(__linux__)
+
 #include "ofMain.h"
 #include "ofxAppManager.h"
 
@@ -52,4 +54,4 @@ public:
 
 #endif
 
-
+#endif

@@ -26,5 +26,23 @@ public:
     
     static ofEvent <ofxMultiPlatformEvent> events;
 };
+
+// This class defines event message structure to be sent back to the Proxy App Layer to trigger Platform specific functions
+//---------------------------------------------
+class ofxAppEvent : public ofEventArgs {
+    
+public:
+    
+    string message;
+    int packetID;
+    
+    ofxAppEvent() {
+        // init defaults
+        packetID = 0;
+        message = "";
+    }
+    
+    static ofEvent <ofxAppEvent> events;
+};
 //---------------------------------------------
 #endif /* defined(__ofxMultiPlatformEvent__) */

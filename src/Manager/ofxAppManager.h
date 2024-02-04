@@ -11,18 +11,17 @@
 #include "ofxBaseApp.h"
 #include "ofxAppGlobals.h"
 #include "ofxMultiPlatformEvent.h"
-
+#include "ofTexture.h"
+#include "ofPixels.h"
 //-------------------------
 // --- Include for Default oF Example App 
 #include "ofApp.h"
 
 
 //-------------------------
-
 #include "ofxDefaultApp.h"
-
+#include "ofxExampleStart.h"
 //---------
-
 class ofxAppManager : public ofBaseApp {
 
 public:
@@ -57,12 +56,25 @@ public:
     void windowResized(int w, int h);
     void dragEvent(ofDragInfo dragInfo);
     void gotMessage(ofMessage msg);
+    
+    void triggerEvent(ofxAppEvent &e);
 
     
     bool bDebug;
     float clickedTime;
 
     ofxBaseApp * app;
+    
+    
+    string nextAppToLoad;
+    bool transitionToNextApp = false;
+    bool inTransitionToNextApp = false;
+    float fadeInTimer = 0;
+    float fadeTimer = 0.5f;
+    float fadeOutTimer = 0;
+    bool takeSnapShot = true;
+    ofPixels* lastApp;
+    ofTexture* lastAppTexture;
 };
 
 #endif

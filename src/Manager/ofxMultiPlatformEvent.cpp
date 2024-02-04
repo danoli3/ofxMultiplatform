@@ -5,3 +5,5 @@
 #include "ofxMultiPlatformEvent.h"
 
 ofEvent <ofxMultiPlatformEvent> ofxMultiPlatformEvent::events;
+
+ofEvent <ofxAppEvent> ofxAppEvent::events;

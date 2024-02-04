@@ -1,5 +1,6 @@
 #include "ofxAppLinuxLayer.h"
 
+#if defined(__linux__)
 //--------------------------------------------------------------
 void ofxAppLinuxLayer::setup(){
     ofSetOrientation(OF_ORIENTATION_DEFAULT);
@@ -146,3 +147,4 @@ void ofxAppLinuxLayer::dragEvent(ofDragInfo dragInfo){
 }
 
 
+#endif

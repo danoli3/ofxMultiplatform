@@ -32,6 +32,8 @@ public:
     
     virtual void gameControllerEvent(GameControllerEvent & event) {};
     
+    virtual void exit(float willExitSceneInMS) {}; // fade out things overtime 
+    
 //-------  Other ofBaseApp Virtual Functions which can be Implemented in inheriting classes
 //    virtual void setup(ofEventArgs & args);
 //    virtual void update(ofEventArgs & args);

@@ -5,9 +5,14 @@
 #pragma once
 
 #include "ofMain.h"
+
+#if defined(TARGET_OS_IOS)
+
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"
 #include "ofxAppManager.h"
+
+#include "ofxMultiPlatformEvent.h"
 
 @protocol ofxAppiOSLayerAppDelegate <NSObject>
 @optional
@@ -36,6 +41,8 @@ public:
     
     void gameControllerEvent(GameControllerEvent & event);
     
+    void triggerEvent(ofxMultiPlatformEvent &e);
+    
     void setDelegate(id delegate);
     void clearDelegate();
     // variables
@@ -44,4 +51,4 @@ public:
     ofxAppManager* manager;
 };
 
-
+#endif

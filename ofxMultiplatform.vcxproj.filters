@@ -1,0 +1,159 @@
+<?xml version="1.0"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+	<ItemGroup>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\Android\ofxAppAndroidLayer.cpp">
+			<Filter>src\Android</Filter>
+		</ClCompile>
+		<ClCompile Include="src\Apps\ofxDefaultApp.cpp">
+			<Filter>src\Apps</Filter>
+		</ClCompile>
+		<ClCompile Include="src\Apps\ofxExampleStart.cpp">
+			<Filter>src\Apps</Filter>
+		</ClCompile>
+		<ClCompile Include="src\Linux\ofxAppLinuxLayer.cpp">
+			<Filter>src\Linux</Filter>
+		</ClCompile>
+		<ClCompile Include="src\Manager\ofxAppManager.cpp">
+			<Filter>src\Manager</Filter>
+		</ClCompile>
+		<ClCompile Include="src\Manager\ofxMultiPlatformEvent.cpp">
+			<Filter>src\Manager</Filter>
+		</ClCompile>
+		<ClCompile Include="src\Windows\ofxAppWindowsLayer.cpp">
+			<Filter>src\Windows</Filter>
+		</ClCompile>
+		<ClCompile Include="src\main.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="src\ofApp.cpp">
+			<Filter>src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.cpp">
+			<Filter>addons\ofxXmlSettings\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlerror.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxXmlSettings\libs\tinyxmlparser.cpp">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClCompile>
+	</ItemGroup>
+	<ItemGroup>
+		<Filter Include="src">
+			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\Android">
+			<UniqueIdentifier>{592F58DB--8BA-3-42-7E-8-1B0-4C11F8F1CF95}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\Apps">
+			<UniqueIdentifier>{905D3AC6--8D6-5-4D-C1-9-9F7-52C74A6851DB}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\Linux">
+			<UniqueIdentifier>{F9732C66--A19-3-4A-69-8-04E-DD4321294DC5}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\Manager">
+			<UniqueIdentifier>{DFCFF744--44B-E-46-9F-8-D79-FA42B72DCB8E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\OSX">
+			<UniqueIdentifier>{92A11118--1CD-4-4F-13-8-D01-4614AFE39487}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\Windows">
+			<UniqueIdentifier>{16C8185B--E76-1-48-EF-B-BBF-507C7CD4798E}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\iOS">
+			<UniqueIdentifier>{F63BDA0A--FDA-3-44-99-8-499-D3ECC4DBDC08}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\iOS\UI">
+			<UniqueIdentifier>{BC75D403--204-C-46-9A-8-8AB-63C5F4B4A231}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="src\iOS\UI\Launch">
+			<UniqueIdentifier>{A0FF41A7--B68-1-4A-4D-B-11B-02225903E936}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons">
+			<UniqueIdentifier>{9DE3FEFF--DF5-8-43-2F-8-685-13AA4B3AE275}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings">
+			<UniqueIdentifier>{52082BCB--FF9-6-43-EC-8-E83-C47B46592988}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings\src">
+			<UniqueIdentifier>{A53C1C5B--BF5-F-4C-7A-8-FF7-7B143608BEAD}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxXmlSettings\libs">
+			<UniqueIdentifier>{F9E9483E--91B-C-4C-8C-B-5FC-769C42684ACE}</UniqueIdentifier>
+		</Filter>
+	</ItemGroup>
+	<ItemGroup>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Android\ofxAppAndroidLayer.h">
+			<Filter>src\Android</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Apps\ofxBaseApp.h">
+			<Filter>src\Apps</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Apps\ofxDefaultApp.h">
+			<Filter>src\Apps</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Apps\ofxExampleStart.h">
+			<Filter>src\Apps</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Linux\ofxAppLinuxLayer.h">
+			<Filter>src\Linux</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Manager\ofxAppGlobals.h">
+			<Filter>src\Manager</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Manager\ofxAppManager.h">
+			<Filter>src\Manager</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Manager\ofxMultiPlatformEvent.h">
+			<Filter>src\Manager</Filter>
+		</ClInclude>
+		<ClInclude Include="src\OSX\ofxAppOSXLayer.h">
+			<Filter>src\OSX</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Windows\ofxAppWindowsLayer.h">
+			<Filter>src\Windows</Filter>
+		</ClInclude>
+		<ClInclude Include="src\iOS\UI\GameControllerEvent.h">
+			<Filter>src\iOS\UI</Filter>
+		</ClInclude>
+		<ClInclude Include="src\iOS\UI\Launch\InitialViewController.h">
+			<Filter>src\iOS\UI\Launch</Filter>
+		</ClInclude>
+		<ClInclude Include="src\iOS\UI\iOSAppDelegate.h">
+			<Filter>src\iOS\UI</Filter>
+		</ClInclude>
+		<ClInclude Include="src\iOS\UI\iOSAppGLKViewController.h">
+			<Filter>src\iOS\UI</Filter>
+		</ClInclude>
+		<ClInclude Include="src\iOS\UI\iOSAppViewController.h">
+			<Filter>src\iOS\UI</Filter>
+		</ClInclude>
+		<ClInclude Include="src\iOS\ofxAppiOSLayer.h">
+			<Filter>src\iOS</Filter>
+		</ClInclude>
+		<ClInclude Include="src\ofApp.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxXmlSettings\src\ofxXmlSettings.h">
+			<Filter>addons\ofxXmlSettings\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxXmlSettings\libs\tinyxml.h">
+			<Filter>addons\ofxXmlSettings\libs</Filter>
+		</ClInclude>
+	</ItemGroup>
+	<ItemGroup>
+		<ResourceCompile Include="icon.rc" />
+	</ItemGroup>
+</Project>

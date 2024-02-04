@@ -1,5 +1,6 @@
 #include "ofxAppAndroidLayer.h"
 
+#if defined(__ANDROID__)
 //--------------------------------------------------------------
 void ofxAppAndroidLayer::setup(){
 	manager = new ofxAppManager();
@@ -127,3 +128,5 @@ void ofxAppAndroidLayer::okPressed(){
 void ofxAppAndroidLayer::cancelPressed(){
 	//
 }
+
+#endif

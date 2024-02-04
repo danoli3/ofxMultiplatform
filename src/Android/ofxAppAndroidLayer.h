@@ -1,6 +1,9 @@
 #pragma once
 
 #include "ofMain.h"
+
+#if defined(__ANDROID__)
+
 #include "ofxAndroid.h"
 #include "ofxAppManager.h"
 
@@ -40,3 +43,5 @@ class ofxAppAndroidLayer : public ofxAndroidApp{
 		jclass javaClass;
 		jobject javaObject;
 };
+
+#endif

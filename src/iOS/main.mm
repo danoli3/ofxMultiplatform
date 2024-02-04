@@ -3,6 +3,7 @@
 // Created by Daniel Rosser on 25/05/2014.
 //--------------------------------------------------------------
 #include "ofMain.h"
+#if defined(TARGET_OS_IOS)
 #include "ofAppiOSWindow.h"
 #include "ofxAppiOSLayer.h"
 #include "iOSAppDelegate.h"
@@ -29,8 +30,10 @@ int main(){
     ofAppiOSWindow * window = (ofAppiOSWindow *)(ofCreateWindow(settings).get());
     bool bUseNative = true;
     if (bUseNative){
+//        window->startAppWithDelegate("AppDelegate");
         window->startAppWithDelegate("iOSAppDelegate");
     } else {
         return ofRunApp(new ofxAppiOSLayer);
     }
 }
+#endif

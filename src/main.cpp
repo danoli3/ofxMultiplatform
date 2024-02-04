@@ -35,35 +35,55 @@
 //========================================================================
 int main( ){
 
-    ofSetCurrentRenderer(ofGLProgrammableRenderer::TYPE);
-	ofSetupOpenGL(1024, 768, OF_WINDOW);
-    
     bool isAppRunning = false;
+
+#ifdef TARGET_EMSCRIPTEN
+	ofGLESWindowSettings settings;
+	settings.glesVersion = 3;
+	#elseifdef TARGET_ANDROID
+	ofGLESWindowSettings settings;
+	settings.glesVersion = 2;
+#else
+	//Use ofGLFWWindowSettings for more options like multi-monitor fullscreen
+	ofGLWindowSettings settings;
+	settings.setGLVersion(4, 1);
+#endif
+
+	settings.setSize(1280, 720);
+	settings.windowMode = OF_WINDOW; //can also be OF_FULLSCREEN
+
+	auto window = ofCreateWindow(settings);
 
 //-------------------- Android
 #ifdef TARGET_ANDROID
-	ofRunApp(new ofxAppAndroidLayer());
-    isAppRunning = true;
+	ofRunApp(window, std::make_shared<ofxAppAndroidLayer>());
+	isAppRunning = true;
+	ofRunMainLoop();
 #endif
-    
+
 #ifdef TARGET_OSX
-    ofRunApp(new ofxAppOSXLayer());
-    isAppRunning = true;
+	ofRunApp(window, std::make_shared<ofxAppOSXLayer>());
+	isAppRunning = true;
+	ofRunMainLoop();
 #endif
-   
+
 #ifdef TARGET_WIN32
-    ofRunApp(new ofxAppWindowsLayer());
-    isAppRunning = true;
+	ofRunApp(window, std::make_shared<ofxAppWindowsLayer>());
+	isAppRunning = true;
+	ofRunMainLoop();
 #endif
-    
+
 #ifdef TARGET_LINUX
-    ofRunApp(new ofxAppLinuxLayer());
-    isAppRunning = true;
+	ofRunApp(window, std::make_shared<ofxAppLinuxLayer>());
+	isAppRunning = true;
+	ofRunApp(new ofxAppLinuxLayer());
 #endif
-    if(isAppRunning == false) {
-        // --- Not Android, OSX or Windows?? Running standard...
-        ofRunApp(new ofxAppManager());
-    }
+	if (isAppRunning == false) {
+		// --- Not Android, OSX or Windows?? Running standard...
+		ofRunApp(window, std::make_shared<ofxAppWindowsLayer>());
+		isAppRunning = true;
+		ofRunMainLoop();
+	}
 	return 0;
 }
 
