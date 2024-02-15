@@ -3,7 +3,8 @@
 // Created by Daniel Rosser on 25/05/2014.
 //--------------------------------------------------------------
 #include "ofMain.h"
-#if defined(TARGET_OS_IOS)
+#include "ofConstants.h"
+#if defined(TARGET_OF_IOS)
 #include "ofAppiOSWindow.h"
 #include "ofxAppiOSLayer.h"
 #include "iOSAppDelegate.h"

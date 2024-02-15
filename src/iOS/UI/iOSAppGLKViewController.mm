@@ -2,6 +2,8 @@
 // ofxMultiPlatform - https://www.github.com/danoli3/ofxMultiPlatform
 // Created by Daniel Rosser on 25/05/2014.
 //--------------------------------------------------------------
+#include "ofConstants.h"
+#if defined(TARGET_OF_IOS)
 #import "iOSAppGLKViewController.h"
 #include "ofxAppiOSLayer.h"
 #import "iOSAppDelegate.h"
@@ -728,3 +730,5 @@ animated:(BOOL)animated {
 #endif
 
 @end
+
+#endif

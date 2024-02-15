@@ -5,7 +5,8 @@
 //  Created by Daniel Rosser on 17/10/2015.
 //
 //
-
+#include "ofConstants.h"
+#if defined(TARGET_OF_IOS)
 #import "InitialViewController.h"
 #import "iOSAppGLKViewController.h"
 #import "iOSAppViewController.h"
@@ -121,3 +122,5 @@
 */
 
 @end
+
+#endif

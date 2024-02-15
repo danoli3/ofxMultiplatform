@@ -47,6 +47,7 @@ int main( ){
 	//Use ofGLFWWindowSettings for more options like multi-monitor fullscreen
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4, 1);
+    settings.transparent = true;
 #endif
 
 	settings.setSize(1280, 720);
@@ -79,12 +80,14 @@ int main( ){
 	isAppRunning = true;
 	ofRunApp(new ofxAppLinuxLayer());
 #endif
+#ifdef TARGET_WIN32
 	if (isAppRunning == false) {
 		// --- Not Android, OSX or Windows?? Running standard...
 		ofRunApp(window, std::make_shared<ofxAppWindowsLayer>());
 		isAppRunning = true;
 		ofRunMainLoop();
 	}
+#endif
 	return 0;
 }
 

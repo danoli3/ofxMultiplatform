@@ -61,7 +61,7 @@ public:
         return 8; // MS
     }
     virtual bool hasEnded() {
-        return (currentTime >= endTime());
+        return (currentFadeIn >= endTime());
     }
  
     

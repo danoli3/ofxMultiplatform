@@ -5,8 +5,8 @@
 #pragma once
 
 #include "ofMain.h"
-
-#if defined(TARGET_OS_IOS)
+#include "ofConstants.h"
+#if defined(TARGET_OF_IOS)
 
 #include "ofxiOS.h"
 #include "ofxiOSExtras.h"

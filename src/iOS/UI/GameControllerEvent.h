@@ -5,6 +5,7 @@
 //  Created by Daniel Rosser on 6/11/2015.
 //
 //
+#include "ofConstants.h"
 
 #ifndef GameControllerEvent_h
 #define GameControllerEvent_h
@@ -56,3 +57,4 @@ public:
 
 
 #endif /* GameControllerEvent_h */
+

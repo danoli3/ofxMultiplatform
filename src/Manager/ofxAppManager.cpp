@@ -19,7 +19,7 @@ ofxAppManager::~ofxAppManager() {
 void ofxAppManager::setup(){
     ofAddListener(ofxAppEvent::events, this, &ofxAppManager::triggerEvent);
     //loadApp("ofApp");
-	loadApp("ofExampleStart");
+	loadApp("ofxExampleStart");
 }
 
 
@@ -49,7 +49,9 @@ void ofxAppManager::loadApp(string appID) {
         //---------------------- Implement your own classes here - Make sure to implement killApp as well
         if(appID == "ofApp") {
             app = new ofApp();
-        } else {
+        } else if(appID == "ofxExampleStart") {
+            app = new ofxExampleStart();
+        }else {
             ofLog(OF_LOG_ERROR, "ofxAppManager::loadApp. Not loading " + appID + " as no matching statement to load that type in loadApp");
         }
         if(app != nullptr) {
@@ -75,6 +77,9 @@ void ofxAppManager::killApp() {
 
     if(appID == "ofApp") {
         delete (ofApp *)app; // casting so we cleanup all memory for ofApp and parent ofBaseApp.
+    }
+    else if(appID == "ofxExampleStart") {
+        delete (ofxExampleStart *)app;
     }
     else {
         delete app; // this is still critical!! Leaking memory!! You must cast to correct object type!

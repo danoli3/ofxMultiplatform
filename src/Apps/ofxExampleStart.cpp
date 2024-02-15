@@ -29,7 +29,7 @@ void ofxExampleStart::update(){
     
     float timeFromLast = ofGetLastFrameTime();
     
-    currentTime += timeFromLast;
+    currentFadeIn += timeFromLast;
     
     
     
