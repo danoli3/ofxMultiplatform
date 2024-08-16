@@ -38,6 +38,7 @@ void ofxExampleStart::update(){
         if(currentFadeIn >= fadeInTotal) {
             isFadedIn = true;
 			ofLog(OF_LOG_NOTICE) << "FadedIn";
+            
         }
     }
 

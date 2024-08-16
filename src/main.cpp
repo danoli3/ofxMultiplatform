@@ -45,11 +45,12 @@ int main( ){
 	settings.glesVersion = 2;
 #else
 	//Use ofGLFWWindowSettings for more options like multi-monitor fullscreen
-	ofGLWindowSettings settings;
+	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4, 1);
 #endif
 
 	settings.setSize(1280, 720);
+	settings.transparent = true;
 	settings.windowMode = OF_WINDOW; //can also be OF_FULLSCREEN
 
 	auto window = ofCreateWindow(settings);
