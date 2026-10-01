@@ -1,0 +1,155 @@
+name: CI
+
+on:
+  push:
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+  workflow_dispatch:
+    inputs:
+      of_ref:
+        description: "openFrameworks git ref (branch/tag/SHA)"
+        required: false
+        default: "master"
+      of_libs:
+        description: "download_libs.sh release tag (latest|nightly|version)"
+        required: false
+        default: "latest"
+
+concurrency:
+  group: ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  OF_REF: ${{ github.event.inputs.of_ref || 'master' }}
+  OF_LIBS_TAG: ${{ github.event.inputs.of_libs || 'latest' }}
+  OF_JOBS: 2
+
+jobs:
+  # ---------------------------------------------------------------------------
+  # Linux64 — make + headless ofxUnitTests
+  # ---------------------------------------------------------------------------
+  test-linux64:
+    name: test · linux64 · OF ${{ github.event.inputs.of_ref || 'master' }}
+    runs-on: ubuntu-24.04
+    env:
+      TARGET: linux64
+    steps:
+      - name: Cache apt packages
+        uses: awalsh128/cache-apt-packages-action@v1.6.0
+        with:
+          packages: >-
+            make curl wget ca-certificates
+            g++ freeglut3-dev libasound2-dev libxmu-dev libxxf86vm-dev
+            libgl1-mesa-dev libglu1-mesa-dev libraw1394-dev libudev-dev
+            libdrm-dev libglew-dev libopenal-dev libsndfile1-dev
+            libfreeimage-dev libcairo2-dev libfreetype6-dev libpulse-dev
+            libusb-1.0-0-dev libgtk-3-dev libopencv-dev libassimp-dev
+            librtaudio-dev libglfw3-dev liburiparser-dev libcurl4-openssl-dev
+            libpugixml-dev libxcursor-dev libxi-dev libxinerama-dev
+            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
+            gstreamer1.0-libav gstreamer1.0-plugins-base gstreamer1.0-plugins-good
+            libjack-jackd2-dev libssl-dev
+            xvfb
+          version: 1.0
+
+      - name: Checkout ofxMultiPlatform
+        uses: actions/checkout@v4
+        with:
+          path: ofxMultiPlatform
+
+      - name: Checkout openFrameworks
+        uses: actions/checkout@v4
+        with:
+          repository: openframeworks/openFrameworks
+          ref: ${{ env.OF_REF }}
+          path: openFrameworks
+          submodules: false
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2.14
+        with:
+          key: linux64-${{ env.OF_REF }}-${{ env.OF_LIBS_TAG }}
+
+      - name: Install OF Linux dependencies
+        working-directory: openFrameworks
+        run: |
+          sudo ./scripts/linux/ubuntu/install_dependencies.sh -y
+          # codecs optional — skip to keep CI lighter
+          true
+
+      - name: Download OF prebuilt libs
+        working-directory: openFrameworks
+        run: ./scripts/linux/download_libs.sh -t "${OF_LIBS_TAG}" -a 64gcc6
+
+      - name: Place project under OF apps tree
+        run: |
+          mkdir -p openFrameworks/apps/myApps
+          # Use a stable path name for OF_ROOT-relative defaults
+          rm -rf openFrameworks/apps/myApps/ofxMultiPlatform
+          cp -a ofxMultiPlatform openFrameworks/apps/myApps/ofxMultiPlatform
+
+      - name: Build OF core (Debug)
+        working-directory: openFrameworks/libs/openFrameworksCompiled/project
+        run: |
+          # lower debug info to save CI memory/time (same idea as OF CI)
+          sed -i "s/PLATFORM_OPTIMIZATION_CFLAGS_DEBUG = .*/PLATFORM_OPTIMIZATION_CFLAGS_DEBUG = -g0/" \
+            ../makefileCommon/config.linux.common.mk || true
+          make -j"${OF_JOBS}" Debug
+
+      - name: Build & run system tests
+        env:
+          OF_ROOT: ${{ github.workspace }}/openFrameworks
+        run: |
+          chmod +x openFrameworks/apps/myApps/ofxMultiPlatform/scripts/ci/run_tests.sh
+          openFrameworks/apps/myApps/ofxMultiPlatform/scripts/ci/run_tests.sh Debug
+
+  # ---------------------------------------------------------------------------
+  # macOS — make (optional xcode path later)
+  # ---------------------------------------------------------------------------
+  test-macos:
+    name: test · macOS · OF ${{ github.event.inputs.of_ref || 'master' }}
+    runs-on: macos-15
+    steps:
+      - name: Checkout ofxMultiPlatform
+        uses: actions/checkout@v4
+        with:
+          path: ofxMultiPlatform
+
+      - name: Checkout openFrameworks
+        uses: actions/checkout@v4
+        with:
+          repository: openframeworks/openFrameworks
+          ref: ${{ env.OF_REF }}
+          path: openFrameworks
+          submodules: false
+
+      - name: ccache
+        uses: hendrikmuhs/ccache-action@v1.2.14
+        with:
+          key: macos-${{ env.OF_REF }}-${{ env.OF_LIBS_TAG }}
+
+      - name: Download OF macOS libs
+        working-directory: openFrameworks
+        run: ./scripts/osx/download_libs.sh -t "${OF_LIBS_TAG}"
+
+      - name: Place project under OF apps tree
+        run: |
+          mkdir -p openFrameworks/apps/myApps
+          rm -rf openFrameworks/apps/myApps/ofxMultiPlatform
+          cp -a ofxMultiPlatform openFrameworks/apps/myApps/ofxMultiPlatform
+
+      - name: Build OF core (Debug)
+        working-directory: openFrameworks/libs/openFrameworksCompiled/project
+        run: make -j"${OF_JOBS}" Debug
+
+      - name: Build & run system tests
+        env:
+          OF_ROOT: ${{ github.workspace }}/openFrameworks
+        run: |
+          chmod +x openFrameworks/apps/myApps/ofxMultiPlatform/scripts/ci/run_tests.sh
+          openFrameworks/apps/myApps/ofxMultiPlatform/scripts/ci/run_tests.sh Debug

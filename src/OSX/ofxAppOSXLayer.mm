@@ -24,10 +24,10 @@ void ofxAppOSXLayer::draw(){
 
 //--------------------------------------------------------------
 void ofxAppOSXLayer::exit(){
-    app->exit();
     ofRemoveListener(ofxMultiPlatformEvent::events, this, &ofxAppOSXLayer::triggerEvent);
     
     if(app != NULL) {
+        app->exit();
         delete app;
         app = NULL;
     }

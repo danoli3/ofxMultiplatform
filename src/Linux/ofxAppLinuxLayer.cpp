@@ -4,7 +4,7 @@
 //--------------------------------------------------------------
 void ofxAppLinuxLayer::setup(){
     ofSetOrientation(OF_ORIENTATION_DEFAULT);
-    ofAddListener(ofAppEvent::events, this, &ofxAppLinuxLayer::triggerEvent);
+    ofAddListener(ofxMultiPlatformEvent::events, this, &ofxAppLinuxLayer::triggerEvent);
     
     manager = new ofxAppManager();
     manager->setup();
@@ -12,20 +12,24 @@ void ofxAppLinuxLayer::setup(){
 
 //--------------------------------------------------------------
 void ofxAppLinuxLayer::update(){
-    manager->update();
+    if(manager != NULL) {
+        manager->update();
+    }
 }
 
 //--------------------------------------------------------------
 void ofxAppLinuxLayer::draw(){
-	manager->draw();
+    if(manager != NULL) {
+        manager->draw();
+    }
 }
 
 //--------------------------------------------------------------
 void ofxAppLinuxLayer::exit(){
-    manager->exit();
-    ofRemoveListener(ofAppEvent::events, this, &ofxAppLinuxLayer::triggerEvent);
+    ofRemoveListener(ofxMultiPlatformEvent::events, this, &ofxAppLinuxLayer::triggerEvent);
     
     if(manager != NULL) {
+        manager->exit();
         delete manager;
         manager = NULL;
     }
@@ -76,7 +80,7 @@ void ofxAppLinuxLayer::deviceOrientationChanged(int newOrientation){
 
 }
 
-void ofxAppLinuxLayer::triggerEvent(ofAppEvent &e) {
+void ofxAppLinuxLayer::triggerEvent(ofxMultiPlatformEvent &e) {
     // manage event for Linux.
 }
 

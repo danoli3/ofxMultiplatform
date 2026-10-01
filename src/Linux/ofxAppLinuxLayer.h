@@ -8,13 +8,13 @@
 #include "ofMain.h"
 #include "ofxAppManager.h"
 
-#include "ofAppEvent.h"
+#include "ofxMultiPlatformEvent.h"
 
 class ofxAppLinuxLayer : public ofBaseApp {
 	
 public:
-    ofAppLayerLinux() {
-        ofxAppManager = NULL;
+    ofxAppLinuxLayer() {
+        manager = NULL;
     }
     void setup();
     void update();
@@ -46,7 +46,7 @@ public:
     void gotMemoryWarning();
     void deviceOrientationChanged(int newOrientation);
     
-    void triggerEvent(ofAppEvent &e);
+    void triggerEvent(ofxMultiPlatformEvent &e);
 
     ofxAppManager * manager;
 

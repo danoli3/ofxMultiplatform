@@ -4,28 +4,18 @@
 //--------------------------------------------------------------
 #include "ofMain.h"
 
-#if defined(TARGET_ANDROID) || defined(__ANDROID__)
-#ifndef TARGET_ANDROID
-#define TARGET_ANDROID
-#endif
+// iOS has its own entry point in src/iOS/main.mm.
+#if !defined(TARGET_OF_IOS)
+
+// Platform selection relies on ofConstants.h, which defines exactly one
+// TARGET_* (Android is not TARGET_LINUX, Emscripten is not TARGET_LINUX).
+#if defined(TARGET_ANDROID)
 #include "ofxAppAndroidLayer.h"
-#endif
-
-#if defined(TARGET_OSX)
+#elif defined(TARGET_OSX)
 #include "ofxAppOSXLayer.h"
-#endif
-
-#if defined(TARGET_WINDOWS) || defined(_WIN32) || defined(__WIN32__) || defined(_WIN64) || defined(__WIN64__)
-#ifndef TARGET_WINDOWS
-#define TARGET_WINDOWS
-#endif
+#elif defined(TARGET_WIN32)
 #include "ofxAppWindowsLayer.h"
-#endif
-
-#if defined(TARGET_LINUX) || defined(__linux) || defined(__unix) || defined(__posix)
-#ifndef TARGET_LINUX
-#define TARGET_LINUX
-#endif
+#elif defined(TARGET_LINUX)
 #include "ofxAppLinuxLayer.h"
 #endif
 
@@ -35,60 +25,39 @@
 //========================================================================
 int main( ){
 
-    bool isAppRunning = false;
-
-#ifdef TARGET_EMSCRIPTEN
+#if defined(TARGET_OPENGLES)
+	// Android, Emscripten, Linux ARM
 	ofGLESWindowSettings settings;
+#if defined(TARGET_EMSCRIPTEN)
 	settings.glesVersion = 3;
-	#elseifdef TARGET_ANDROID
-	ofGLESWindowSettings settings;
+#else
 	settings.glesVersion = 2;
+#endif
 #else
 	//Use ofGLFWWindowSettings for more options like multi-monitor fullscreen
 	ofGLFWWindowSettings settings;
 	settings.setGLVersion(4, 1);
-    settings.transparent = true;
+	settings.transparent = true;
 #endif
 
 	settings.setSize(1280, 720);
-	settings.transparent = true;
 	settings.windowMode = OF_WINDOW; //can also be OF_FULLSCREEN
 
 	auto window = ofCreateWindow(settings);
 
-//-------------------- Android
-#ifdef TARGET_ANDROID
+#if defined(TARGET_ANDROID)
 	ofRunApp(window, std::make_shared<ofxAppAndroidLayer>());
-	isAppRunning = true;
-	ofRunMainLoop();
-#endif
-
-#ifdef TARGET_OSX
+#elif defined(TARGET_OSX)
 	ofRunApp(window, std::make_shared<ofxAppOSXLayer>());
-	isAppRunning = true;
-	ofRunMainLoop();
-#endif
-
-#ifdef TARGET_WIN32
+#elif defined(TARGET_WIN32)
 	ofRunApp(window, std::make_shared<ofxAppWindowsLayer>());
-	isAppRunning = true;
-	ofRunMainLoop();
-#endif
-
-#ifdef TARGET_LINUX
+#elif defined(TARGET_LINUX)
 	ofRunApp(window, std::make_shared<ofxAppLinuxLayer>());
-	isAppRunning = true;
-	ofRunApp(new ofxAppLinuxLayer());
+#else
+	// No platform layer (e.g. Emscripten): run the manager directly.
+	ofRunApp(window, std::make_shared<ofxAppManager>());
 #endif
-#ifdef TARGET_WIN32
-	if (isAppRunning == false) {
-		// --- Not Android, OSX or Windows?? Running standard...
-		ofRunApp(window, std::make_shared<ofxAppWindowsLayer>());
-		isAppRunning = true;
-		ofRunMainLoop();
-	}
-#endif
-	return 0;
+	return ofRunMainLoop();
 }
 
 #ifdef TARGET_ANDROID
@@ -101,3 +70,5 @@ extern "C"{
 	}
 }
 #endif
+
+#endif // !TARGET_OF_IOS

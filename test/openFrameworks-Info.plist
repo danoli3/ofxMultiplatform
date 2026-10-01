@@ -27,7 +27,7 @@
 	<key>NSMicrophoneUsageDescription</key>
 	<string>This app needs to access the microphone</string>
 	<key>NSHighResolutionCapable</key>
-	<false/>
+	<string>${HIGH_RESOLUTION_CAPABLE}</string>
 	<key>NSCameraUseContinuityCameraDeviceType</key>
 	<true/>
 </dict>

@@ -5,16 +5,22 @@
 #pragma once
 
 #include "ofxBaseApp.h"
+#include <string>
 
-
-///------------------------------------------
-// Example Application on how to use
+/// Minimal stub scene — useful as a registry example / placeholder.
 class ofxDefaultApp : public ofxBaseApp {
-    
+
 public:
-    
-    string getClassName() { return "ofxDefaultApp"; }
-    
-    ofxDefaultApp();
-    ~ofxDefaultApp();
+	std::string getClassName() { return "ofxDefaultApp"; }
+
+	ofxDefaultApp();
+	~ofxDefaultApp() override;
+
+	void setup() override;
+	void draw() override;
+	void keyPressed(int key) override;
+	void onEnter() override;
+
+	float enterDuration() const override { return 0.2f; }
+	float exitDuration() const override { return 0.2f; }
 };

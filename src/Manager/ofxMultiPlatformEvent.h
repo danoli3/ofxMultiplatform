@@ -8,41 +8,60 @@
 #define __ofxMultiPlatformEvent__
 
 #include "ofMain.h"
+#include <string>
 
-// This class defines event message structure to be sent back to the Proxy App Layer to trigger Platform specific functions
+// Packet ids for ofxAppEvent (scene manager)
+namespace ofxAppEventID {
+	const int ChangeApp = 1;   // message = scene / app id to load
+	const int Platform  = 100; // reserved for platform-layer messages
+}
+
+// Packet ids for ofxMultiPlatformEvent (platform proxy layer)
+namespace ofxMultiPlatformEventID {
+	const int Generic = 0;
+}
+
+// Event for platform-specific proxy layers (iOS/Android/OSX shells)
 //---------------------------------------------
 class ofxMultiPlatformEvent : public ofEventArgs {
-    
+
 public:
-    
-    string message;
-    int packetID;
-    
-    ofxMultiPlatformEvent() {
-        // init defaults
-        packetID = 0;
-        message = "";
-    }
-    
-    static ofEvent <ofxMultiPlatformEvent> events;
+
+	std::string message;
+	int packetID;
+
+	ofxMultiPlatformEvent() {
+		packetID = 0;
+		message = "";
+	}
+
+	static ofEvent <ofxMultiPlatformEvent> events;
 };
 
-// This class defines event message structure to be sent back to the Proxy App Layer to trigger Platform specific functions
+// Event for scene / app manager (change scene, etc.)
 //---------------------------------------------
 class ofxAppEvent : public ofEventArgs {
-    
+
 public:
-    
-    string message;
-    int packetID;
-    
-    ofxAppEvent() {
-        // init defaults
-        packetID = 0;
-        message = "";
-    }
-    
-    static ofEvent <ofxAppEvent> events;
+
+	std::string message;
+	int packetID;
+
+	ofxAppEvent() {
+		packetID = 0;
+		message = "";
+	}
+
+	static ofEvent <ofxAppEvent> events;
 };
+
+/// Request a scene change from anywhere (current scene, UI, etc.).
+inline void ofxRequestAppChange(const std::string & appID) {
+	ofxAppEvent e;
+	e.packetID = ofxAppEventID::ChangeApp;
+	e.message = appID;
+	ofNotifyEvent(ofxAppEvent::events, e);
+}
+
 //---------------------------------------------
 #endif /* defined(__ofxMultiPlatformEvent__) */

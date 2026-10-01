@@ -1,76 +1,43 @@
-//
-//  ofxExampleStart.hpp
-//
 //  Created by Daniel Rosser on 4/02/2024.
-//
-//
-
-#ifndef ofxExampleStart_hpp
-#define ofxExampleStart_hpp
-
-#pragma once
-#include "ofMain.h"
-
-using std::string;
-using std::vector;
-
-#include "ofImage.h"
-
-#include "ofxBaseApp.h" // <--- Add this
+// ofxExampleStart.h
+// Intro / splash scene — fades in, then auto-advances to the menu
+// (or skip with click / space).
 //--------------------------------------------------------------
-class ofxExampleStart : public ofxBaseApp{  //public ofBaseApp{ // <--- change this to ofxBaseApp
-    
+#pragma once
+
+#include "ofxBaseApp.h"
+#include <string>
+
+class ofxExampleStart : public ofxBaseApp {
+
 public:
-    
-    
-    ofxExampleStart();  // <-- Add constructor to header and to source!
-    ~ofxExampleStart();
-    string getClassName() { return "ofxExampleStart"; } // <--- ADD THIS! WITH THIS CLASSNAME
-    
-    void setup();
-    void update();
-    void draw();
-    
-    void keyPressed(int key);
-    void keyReleased(int key);
-    void mouseMoved(int x, int y );
-    void mouseDragged(int x, int y, int button);
-    void mousePressed(int x, int y, int button);
-    void mouseReleased(int x, int y, int button);
-    void windowResized(int w, int h);
-    void dragEvent(ofDragInfo dragInfo);
-    void gotMessage(ofMessage msg);
-    
-    // --- Implement touch events!!!!
-    void touchDown(int x, int y, int id){};
-    void touchMoved(int x, int y, int id){};
-    void touchUp(int x, int y, int id){};
-    void touchDoubleTap(int x, int y, int id){};
-    void touchCancelled(int x, int y, int id){};
-    
-    ofShader shader;
-	ofFbo fboBlurOnePass;
+	ofxExampleStart();
+	~ofxExampleStart() override;
 
-    ofPlanePrimitive plane;
-	ofShortImage * image;
-    
-    string fragShader;
-    float beat = 0;
-    
-    virtual float endTime() {
-        return 8; // MS
-    }
-    virtual bool hasEnded() {
-        return (currentFadeIn >= endTime());
-    }
- 
-    
-    float fadeInTotal = 10;
-    float currentFadeIn = 0;
-    bool isFadedIn = false;
-  
-    ofSoundPlayer sound;
+	std::string getClassName() { return "ofxExampleStart"; }
+
+	void setup() override;
+	void update() override;
+	void draw() override;
+
+	void keyPressed(int key) override;
+	void mousePressed(int x, int y, int button) override;
+	void touchDown(int x, int y, int id) override;
+
+	void onEnter() override;
+	void onExit(float durationSec) override;
+
+	bool hasEnded() const override { return finished; }
+	std::string nextAppName() const override { return "ofxExampleMenu"; }
+
+	float enterDuration() const override { return 0.4f; }
+	float exitDuration() const override { return 0.3f; }
+
+private:
+	void markFinished();
+
+	float holdSeconds = 2.5f;   // time after fade before auto-advance
+	float age = 0.f;            // seconds since onEnter
+	float contentFade = 0.f;    // 0..1 content opacity
+	bool finished = false;
 };
-
-
-#endif /* ofxExampleStart_hpp */

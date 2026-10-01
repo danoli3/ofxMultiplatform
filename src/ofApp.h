@@ -5,41 +5,41 @@
 #pragma once
 
 #include "ofMain.h"
-
-#include "ofxBaseApp.h" // <--- Add this
+#include "ofxBaseApp.h"
 
 //--------------------------------------------------------------
-class ofApp : public ofxBaseApp{  //public ofBaseApp{ // <--- change this to ofxBaseApp
+class ofApp : public ofxBaseApp {
 
-	public:
-    
-    
-        ofApp();  // <-- Add constructor to header and to source!
-        ~ofApp();
-        string getClassName() { return "ofApp"; } // <--- ADD THIS! WITH THIS CLASSNAME
-    
-		void setup();
-		void update();
-		void draw();
+public:
+	ofApp();
+	~ofApp() override;
 
-		void keyPressed(int key);
-		void keyReleased(int key);
-		void mouseMoved(int x, int y );
-		void mouseDragged(int x, int y, int button);
-		void mousePressed(int x, int y, int button);
-		void mouseReleased(int x, int y, int button);
-		void windowResized(int w, int h);
-		void mouseEntered(int x, int y);
-		void mouseExited(int x, int y);
-		void dragEvent(ofDragInfo dragInfo);
-		void gotMessage(ofMessage msg);
+	std::string getClassName() { return "ofApp"; }
 
-		
-    
-        // --- Implement touch events!!!!
-        void touchDown(int x, int y, int id){};
-        void touchMoved(int x, int y, int id){};
-        void touchUp(int x, int y, int id){};
-        void touchDoubleTap(int x, int y, int id){};
-        void touchCancelled(int x, int y, int id){};
+	void setup() override;
+	void update() override;
+	void draw() override;
+
+	void keyPressed(int key) override;
+	void keyReleased(int key) override;
+	void mouseMoved(int x, int y) override;
+	void mouseDragged(int x, int y, int button) override;
+	void mousePressed(int x, int y, int button) override;
+	void mouseReleased(int x, int y, int button) override;
+	void windowResized(int w, int h) override;
+	void mouseEntered(int x, int y);
+	void mouseExited(int x, int y);
+	void dragEvent(ofDragInfo dragInfo) override;
+	void gotMessage(ofMessage msg) override;
+
+	void onEnter() override;
+
+	void touchDown(int x, int y, int id) override {}
+	void touchMoved(int x, int y, int id) override {}
+	void touchUp(int x, int y, int id) override {}
+	void touchDoubleTap(int x, int y, int id) override {}
+	void touchCancelled(int x, int y, int id) override {}
+
+	float enterDuration() const override { return 0.3f; }
+	float exitDuration() const override { return 0.25f; }
 };

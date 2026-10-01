@@ -201,6 +201,8 @@
 		<ClCompile Include="src\Android\ofxAppAndroidLayer.cpp" />
 		<ClCompile Include="src\Apps\ofxDefaultApp.cpp" />
 		<ClCompile Include="src\Apps\ofxExampleStart.cpp" />
+		<ClCompile Include="src\Apps\ofxExampleMenu.cpp" />
+		<ClCompile Include="src\ofxRegisterScenes.cpp" />
 		<ClCompile Include="src\Linux\ofxAppLinuxLayer.cpp" />
 		<ClCompile Include="src\Manager\ofxAppManager.cpp" />
 		<ClCompile Include="src\Manager\ofxMultiPlatformEvent.cpp" />
@@ -216,6 +218,8 @@
 		<ClInclude Include="src\Apps\ofxBaseApp.h" />
 		<ClInclude Include="src\Apps\ofxDefaultApp.h" />
 		<ClInclude Include="src\Apps\ofxExampleStart.h" />
+		<ClInclude Include="src\Apps\ofxExampleMenu.h" />
+		<ClInclude Include="src\Manager\ofxSceneRegistry.h" />
 		<ClInclude Include="src\Linux\ofxAppLinuxLayer.h" />
 		<ClInclude Include="src\Manager\ofxAppGlobals.h" />
 		<ClInclude Include="src\Manager\ofxAppManager.h" />
