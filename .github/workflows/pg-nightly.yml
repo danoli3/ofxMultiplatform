@@ -151,7 +151,6 @@ jobs:
             -target ofxMultiPlatform \
             -sdk iphonesimulator \
             -configuration Release \
-            -derivedDataPath "${PROJECT_DIR}/build" \
             CODE_SIGNING_ALLOWED=NO \
             CODE_SIGNING_REQUIRED=NO \
             CODE_SIGN_IDENTITY="" \
