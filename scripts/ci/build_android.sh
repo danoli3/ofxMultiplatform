@@ -135,6 +135,29 @@ script = script.replace(ninja, 'ninja -j "${NUM_CORES:-${PARALLEL_MAKE:-2}}"', 1
 cmake_sh.write_text(script)
 print(f"==> pinned NDK in {cmake_sh.name}")
 
+# The desktop makefile adds every source directory as -I. The Android
+# template only adds src/, so headers in src/Apps, src/Manager, and
+# src/Android are invisible.
+cmake_lists = project / "ofApp/src/CMakeLists.txt"
+if not cmake_lists.is_file():
+    sys.exit(f"CMakeLists missing: {cmake_lists}")
+cl = cmake_lists.read_text()
+marker = "# ofxMultiPlatform source include dirs"
+if marker not in cl:
+    cl += """
+# ofxMultiPlatform source include dirs
+file(GLOB_RECURSE _APP_HEADERS "${OF_APP_SRC_PATH}/*.h")
+set(_app_inc)
+foreach(_hdr ${_APP_HEADERS})
+    get_filename_component(_dir "${_hdr}" DIRECTORY)
+    list(APPEND _app_inc "${_dir}")
+endforeach()
+list(REMOVE_DUPLICATES _app_inc)
+target_include_directories(${PROJECT_NAME} PRIVATE ${_app_inc})
+"""
+    cmake_lists.write_text(cl)
+print("==> source include dirs cover src subfolders")
+
 sdk = os.environ["ANDROID_HOME"]
 (project / "local.properties").write_text(f"sdk.dir={sdk}\n")
 PY
