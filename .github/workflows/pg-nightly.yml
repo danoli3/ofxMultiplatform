@@ -2,7 +2,8 @@ name: PG nightly
 
 # Compile test of this template against a packaged openFrameworks release.
 # Downloads the nightly release (not a git checkout), runs the Project Generator
-# CLI, and builds Linux, Windows, and macOS. Unit tests stay in ci.yml.
+# CLI, and builds Linux, Windows, and macOS. Emscripten uses the Linux package
+# and emmake: Project Generator has no emscripten project class. Unit tests stay in ci.yml.
 
 on:
   push:
@@ -124,3 +125,17 @@ jobs:
             MACOSX_DEPLOYMENT_TARGET=12.0
           test -d bin/ofxMultiPlatform.app
           echo "built $(pwd)/bin/ofxMultiPlatform.app"
+
+  emscripten:
+    name: pg · emscripten · ${{ github.event.inputs.of_release || 'nightly' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - name: Checkout ofxMultiPlatform
+        uses: actions/checkout@v4
+
+      - name: Download openFrameworks nightly
+        run: bash scripts/ci/fetch_of_nightly.sh '*_linux64_gcc6_release.tar.gz'
+
+      - name: Build Emscripten Release
+        run: bash scripts/ci/build_emscripten.sh
