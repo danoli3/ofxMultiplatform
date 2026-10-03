@@ -1,5 +1,10 @@
 # ofxMultiPlatform
 
+[![CI](https://github.com/danoli3/ofxMultiplatform/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/danoli3/ofxMultiplatform/actions/workflows/ci.yml)
+[![PG nightly](https://github.com/danoli3/ofxMultiplatform/actions/workflows/pg-nightly.yml/badge.svg?branch=main&event=push)](https://github.com/danoli3/ofxMultiplatform/actions/workflows/pg-nightly.yml)
+
+**CI** is the headless tests on Linux and macOS. **PG nightly** is the compile on Linux, Windows, macOS, Emscripten, and Android.
+
 openFrameworks multi-platform app template (macOS / iOS / Android / Windows / Linux) with a **scene manager**.
 
 Platform shells (`ofxAppOSXLayer`, `ofxAppiOSLayer`, …) own window/lifecycle and forward events into **`ofxAppManager`**, which owns the current **scene** (`ofxBaseApp` subclass).
@@ -155,6 +160,8 @@ They use OF’s **`ofxUnitTests`** addon and run **headless**.
 # or
 cd test && make -j OF_ROOT=/path/to/openFrameworks Debug && ./bin/test_debug
 ```
+
+The badges at the top track the two workflows below.
 
 GitHub Actions (`.github/workflows/ci.yml`) on push/PR:
 
