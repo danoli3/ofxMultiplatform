@@ -166,14 +166,15 @@ echo "==> platform ${PLATFORM}"
 log="${RUNNER_TEMP:-/tmp}/pg-nightly.log"
 set +e
 if [[ "${RUNNER_OS:-}" == "Windows" ]]; then
-	# This CLI rewrites arguments that start with / into drive paths, so
-	# /ofPath=D:\a\... arrives as D:\ofPath=D:\a\... and is used as the
-	# project path. The parser accepts the same dash options as on Unix.
+	# Arguments that start with / are rewritten to drive paths. The option
+	# parser only keeps a value when it is glued to the flag (-oD:\of -pvs),
+	# same as the Unix -o"$OF_ROOT" form. A separate --ofPath value is taken
+	# as the project path and an empty platform then crashes the CLI.
 	of_win="$(native_path "$OF_ROOT")"
 	proj_win="$(native_path "$PROJECT_DIR")"
 	export PG_OF_PATH="$of_win"
 	echo "==> PG_OF_PATH=${PG_OF_PATH}"
-	"$PG" --ofPath "$of_win" --platforms "$PLATFORM" --verbose "$proj_win" | tee "$log"
+	"$PG" "-o${of_win}" "-p${PLATFORM}" -v "$proj_win" | tee "$log"
 else
 	"$PG" -o"$OF_ROOT" -p"$PLATFORM" -v "$PROJECT_DIR" | tee "$log"
 fi
