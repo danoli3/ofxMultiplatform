@@ -2,8 +2,9 @@ name: PG nightly
 
 # Compile test of this template against a packaged openFrameworks release.
 # Downloads the nightly release (not a git checkout), runs the Project Generator
-# CLI, and builds Linux, Windows, and macOS. Emscripten uses the Linux package
-# and emmake: Project Generator has no emscripten project class. Unit tests stay in ci.yml.
+# CLI, and builds Linux, Windows, macOS, and Android. Emscripten uses the Linux
+# package and emmake: Project Generator has no emscripten project class.
+# Unit tests stay in ci.yml.
 
 on:
   push:
@@ -139,3 +140,20 @@ jobs:
 
       - name: Build Emscripten Release
         run: bash scripts/ci/build_emscripten.sh
+
+  android:
+    name: pg · android · ${{ github.event.inputs.of_release || 'nightly' }}
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - name: Checkout ofxMultiPlatform
+        uses: actions/checkout@v4
+
+      - name: Download openFrameworks nightly
+        run: bash scripts/ci/fetch_of_nightly.sh '*_android_macos_release.tar.gz'
+
+      - name: Run Project Generator
+        run: bash scripts/ci/run_project_generator.sh android
+
+      - name: Build debug APK
+        run: bash scripts/ci/build_android.sh
