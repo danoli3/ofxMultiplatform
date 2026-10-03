@@ -70,6 +70,16 @@ public:
 	/// resources here if needed; object is destroyed after the fade.
 	virtual void onExit(float durationSec) { (void)durationSec; }
 
+	/// App left the foreground (desktop lost focus, mobile pause).
+	virtual void onPause() {}
+
+	/// App returned to the foreground.
+	virtual void onResume() {}
+
+	/// Platform back (Android back key). Return true when the scene handled
+	/// it. False lets the manager return to backSceneId, or the OS exit.
+	virtual bool onBackPressed() { return false; }
+
 	/// Legacy alias used by older scenes.
 	virtual void exit(float willExitSceneInMS) {
 		onExit(willExitSceneInMS / 1000.f);

@@ -1,19 +1,19 @@
 #!/usr/bin/env bash
 # Run the Project Generator CLI against apps/myApps/ofxMultiPlatform.
 #
-# Usage: run_project_generator.sh <osx|linux64|vs|android>
+# Usage: run_project_generator.sh <osx|ios|linux64|vs|android>
 # Requires OF_ROOT and PROJECT_DIR (set by fetch_of_nightly.sh).
 # PG_RELEASE (default: nightly) is the projectGenerator release used when the
 # openFrameworks package has no working command-line binary.
 set -euo pipefail
 
-PLATFORM="${1:?pg platform required (osx, linux64, vs, or android)}"
+PLATFORM="${1:?pg platform required (osx, ios, linux64, vs, or android)}"
 OF_ROOT="${OF_ROOT:?set OF_ROOT}"
 PROJECT_DIR="${PROJECT_DIR:?set PROJECT_DIR}"
 PG_RELEASE="${PG_RELEASE:-nightly}"
 
 case "$PLATFORM" in
-	osx|linux64|vs|android) ;;
+	osx|ios|linux64|vs|android) ;;
 	*)
 		echo "error: unsupported platform ${PLATFORM}" >&2
 		exit 1
@@ -102,7 +102,7 @@ download_cli() {
 	case "$PLATFORM" in
 		linux64) asset="projectGenerator-linux.tar.bz2" ;;
 		vs) asset="projectGenerator-vs.zip" ;;
-		osx|android) asset="projectGenerator-osx.zip" ;;
+		osx|ios|android) asset="projectGenerator-osx.zip" ;;
 	esac
 	dest="${RUNNER_TEMP:-/tmp}/ofxmp-pg-cli"
 	rm -rf "$dest"

@@ -3,7 +3,7 @@
 [![CI](https://github.com/danoli3/ofxMultiplatform/actions/workflows/ci.yml/badge.svg?branch=main&event=push)](https://github.com/danoli3/ofxMultiplatform/actions/workflows/ci.yml)
 [![PG nightly](https://github.com/danoli3/ofxMultiplatform/actions/workflows/pg-nightly.yml/badge.svg?branch=main&event=push)](https://github.com/danoli3/ofxMultiplatform/actions/workflows/pg-nightly.yml)
 
-**CI** is the headless tests on Linux and macOS. **PG nightly** is the compile on Linux, Windows, macOS, Emscripten, and Android.
+**CI** is the headless tests on Linux and macOS. **PG nightly** is the compile on Linux, Windows, macOS, iOS, Emscripten, and Android.
 
 openFrameworks multi-platform app template (macOS / iOS / Android / Windows / Linux) with a **scene manager**.
 
@@ -172,6 +172,6 @@ GitHub Actions (`.github/workflows/ci.yml`) on push/PR:
 
 Manual run: **Actions → CI → Run workflow** (optional OF ref / libs tag).
 
-A second workflow (`.github/workflows/pg-nightly.yml`) downloads the openFrameworks **nightly** release package, runs the Project Generator command-line tool, and compiles this app on Linux, Windows, macOS, and Android. The Linux package is also built for Emscripten with `emmake`. It does not run the unit tests. Manual run: **Actions → PG nightly → Run workflow**.
+A second workflow (`.github/workflows/pg-nightly.yml`) downloads the openFrameworks **nightly** release package, runs the Project Generator command-line tool, and compiles this app on Linux, Windows, macOS, iOS (simulator), and Android. The Linux package is also built for Emscripten with `emmake`. It does not run the unit tests. Manual run: **Actions → PG nightly → Run workflow**.
 
 See [test/README.md](test/README.md).

@@ -60,12 +60,16 @@ void ofxAppOSXLayer::touchCancelled(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofxAppOSXLayer::lostFocus(){
-
+    if(app) {
+        app->pause();
+    }
 }
 
 //--------------------------------------------------------------
 void ofxAppOSXLayer::gotFocus(){
-
+    if(app) {
+        app->resume();
+    }
 }
 
 //--------------------------------------------------------------

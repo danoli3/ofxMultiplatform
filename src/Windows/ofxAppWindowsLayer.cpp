@@ -75,10 +75,16 @@ void ofxAppWindowsLayer::touchCancelled(ofTouchEventArgs & touch) {
 
 //--------------------------------------------------------------
 void ofxAppWindowsLayer::lostFocus() {
+	if(manager != nullptr) {
+		manager->pause();
+	}
 }
 
 //--------------------------------------------------------------
 void ofxAppWindowsLayer::gotFocus() {
+	if(manager != nullptr) {
+		manager->resume();
+	}
 }
 
 //--------------------------------------------------------------

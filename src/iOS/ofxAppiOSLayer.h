@@ -15,8 +15,6 @@
 #include "ofxMultiPlatformEvent.h"
 
 @protocol ofxAppiOSLayerAppDelegate <NSObject>
-@optional
-- (void)launchWebView;
 @end
 
 

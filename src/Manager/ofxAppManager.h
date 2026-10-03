@@ -69,6 +69,13 @@ public:
 	void dragEvent(ofDragInfo dragInfo) override;
 	void gotMessage(ofMessage msg) override;
 
+	/// Forward focus loss / Android pause to the current scene.
+	void pause();
+	/// Forward focus gain / Android resume to the current scene.
+	void resume();
+	/// Scene first, then backSceneId. False means the platform may exit.
+	bool backPressed();
+
 	void triggerEvent(ofxAppEvent & e);
 
 	bool bDebug = true;
@@ -83,6 +90,8 @@ public:
 	bool blockInputDuringTransition = true;
 	/// Starting scene id.
 	std::string bootSceneId = "ofxExampleStart";
+	/// Scene loaded by backPressed when the current scene does not handle it.
+	std::string backSceneId = "ofxExampleMenu";
 
 	/// When false, setup() registers scenes but does not load bootSceneId
 	/// (useful for unit tests that drive loadApp themselves).

@@ -12,12 +12,6 @@
 #include "ofxAppManager.h"
 #include "ofxMultiPlatformEvent.h"
 
-//@protocol ofAppLayerOSXAppDelegate <NSObject>
-//@optional
-//- (void)launchWebView;
-//@end
-
-
 class ofxAppOSXLayer : public ofBaseApp {
 	
 public:
@@ -28,9 +22,7 @@ public:
     void update();
     void draw();
     void exit();
-    
-    void launchWebView();
-    
+
     void keyPressed(int key);
     void keyReleased(int key);
     

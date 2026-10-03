@@ -13,7 +13,6 @@ class ofxAppAndroidLayer : public ofxAndroidApp{
 		
 		void setup();
 		void exit();
-		void launchWebView();
 
 		void update();
 		void draw();

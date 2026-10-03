@@ -3,7 +3,7 @@
 #ifndef __ofxAppLinuxLayer_h__
 #define __ofxAppLinuxLayer_h__
 
-#if defined(__linux__)
+#if defined(__linux__) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__)
 
 #include "ofMain.h"
 #include "ofxAppManager.h"
@@ -20,9 +20,7 @@ public:
     void update();
     void draw();
     void exit();
-    
-    void launchWebView();
-    
+
     void keyPressed(int key);
     void keyReleased(int key);
     

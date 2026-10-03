@@ -1,6 +1,6 @@
 #include "ofxAppLinuxLayer.h"
 
-#if defined(__linux__)
+#if defined(__linux__) && !defined(__ANDROID__) && !defined(__EMSCRIPTEN__)
 //--------------------------------------------------------------
 void ofxAppLinuxLayer::setup(){
     ofSetOrientation(OF_ORIENTATION_DEFAULT);
@@ -62,12 +62,16 @@ void ofxAppLinuxLayer::touchCancelled(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofxAppLinuxLayer::lostFocus(){
-
+    if(manager) {
+        manager->pause();
+    }
 }
 
 //--------------------------------------------------------------
 void ofxAppLinuxLayer::gotFocus(){
-
+    if(manager) {
+        manager->resume();
+    }
 }
 
 //--------------------------------------------------------------

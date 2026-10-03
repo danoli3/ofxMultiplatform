@@ -2,7 +2,7 @@ name: PG nightly
 
 # Compile test of this template against a packaged openFrameworks release.
 # Downloads the nightly release (not a git checkout), runs the Project Generator
-# CLI, and builds Linux, Windows, macOS, and Android. Emscripten uses the Linux
+# CLI, and builds Linux, Windows, macOS, iOS, and Android. Emscripten uses the Linux
 # package and emmake: Project Generator has no emscripten project class.
 # Unit tests stay in ci.yml.
 
@@ -126,6 +126,40 @@ jobs:
             MACOSX_DEPLOYMENT_TARGET=12.0
           test -d bin/ofxMultiPlatform.app
           echo "built $(pwd)/bin/ofxMultiPlatform.app"
+
+  ios:
+    name: pg · iOS · ${{ github.event.inputs.of_release || 'nightly' }}
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - name: Checkout ofxMultiPlatform
+        uses: actions/checkout@v4
+
+      - name: Download openFrameworks nightly
+        run: bash scripts/ci/fetch_of_nightly.sh '*_ios_release.tar.gz'
+
+      - name: Run Project Generator
+        run: bash scripts/ci/run_project_generator.sh ios
+
+      - name: Build Release for the simulator
+        run: |
+          set -euo pipefail
+          cd "${PROJECT_DIR}"
+          xcodebuild -project ofxMultiPlatform.xcodeproj -list
+          xcodebuild \
+            -project ofxMultiPlatform.xcodeproj \
+            -target ofxMultiPlatform \
+            -sdk iphonesimulator \
+            -configuration Release \
+            -derivedDataPath "${PROJECT_DIR}/build" \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="" \
+            ONLY_ACTIVE_ARCH=YES
+          app="$(find "${PROJECT_DIR}/build" -name 'ofxMultiPlatform.app' -type d -print -quit)"
+          test -n "$app"
+          test -d "$app"
+          echo "built ${app}"
 
   emscripten:
     name: pg · emscripten · ${{ github.event.inputs.of_release || 'nightly' }}

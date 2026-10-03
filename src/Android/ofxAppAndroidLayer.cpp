@@ -6,17 +6,33 @@ void ofxAppAndroidLayer::setup(){
 	manager = new ofxAppManager();
 	manager->setup();
 
+	javaClass = nullptr;
+	javaObject = nullptr;
+
 	JNIEnv *env = ofGetJNIEnv();
-	jclass localClass = env->FindClass("cc/openframeworks/ofxMultiplatform/OFActivity");
-	javaClass = (jclass)env->NewGlobalRef(localClass);
-	if(javaClass == NULL) {
-		ofLog() << "javaClass not found!" << endl;
+	if(!env) {
+		ofLogError("ofxAppAndroidLayer") << "JNIEnv missing";
+		return;
 	}
 
-	javaObject = ofGetOFActivityObject();
-	javaObject = (jobject)env->NewGlobalRef(javaObject);
-	if(javaObject == NULL) {
-		ofLog() << "javaObject not found!" << endl;
+	// Project Generator copies OFActivity.java in this package. The Java
+	// class name is not the applicationId.
+	jclass localClass = env->FindClass("cc/openframeworks/android/OFActivity");
+	if(!localClass) {
+		if(env->ExceptionCheck()) {
+			env->ExceptionClear();
+		}
+		ofLogError("ofxAppAndroidLayer") << "cc.openframeworks.android.OFActivity not found";
+	} else {
+		javaClass = (jclass)env->NewGlobalRef(localClass);
+		env->DeleteLocalRef(localClass);
+	}
+
+	jobject activity = ofGetOFActivityObject();
+	if(activity) {
+		javaObject = (jobject)env->NewGlobalRef(activity);
+	} else {
+		ofLogError("ofxAppAndroidLayer") << "OF activity object not found";
 	}
 }
 
@@ -50,7 +66,9 @@ void ofxAppAndroidLayer::keyReleased(int key){
 
 //--------------------------------------------------------------
 void ofxAppAndroidLayer::windowResized(int w, int h){
-	//manager->windowResized(w,h);
+	if(manager) {
+		manager->windowResized(w, h);
+	}
 }
 
 //--------------------------------------------------------------
@@ -85,7 +103,9 @@ void ofxAppAndroidLayer::swipe(ofxAndroidSwipeDir swipeDir, int id){
 
 //--------------------------------------------------------------
 void ofxAppAndroidLayer::pause(){
-	//
+	if(manager) {
+		manager->pause();
+	}
 }
 
 //--------------------------------------------------------------
@@ -95,7 +115,9 @@ void ofxAppAndroidLayer::stop(){
 
 //--------------------------------------------------------------
 void ofxAppAndroidLayer::resume(){
-	//
+	if(manager) {
+		manager->resume();
+	}
 }
 
 //--------------------------------------------------------------
@@ -105,7 +127,10 @@ void ofxAppAndroidLayer::reloadTextures(){
 
 //--------------------------------------------------------------
 bool ofxAppAndroidLayer::backPressed(){
-	return false;
+	if(!manager) {
+		return false;
+	}
+	return manager->backPressed();
 }
 
 //--------------------------------------------------------------

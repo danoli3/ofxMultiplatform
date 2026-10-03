@@ -600,6 +600,43 @@ void ofxAppManager::windowResized(int w, int h) {
 	}
 }
 
+void ofxAppManager::pause() {
+	if(!app) {
+		return;
+	}
+	ofxBaseApp * current = app.get();
+	enterSceneCall();
+	current->onPause();
+	leaveSceneCall();
+}
+
+void ofxAppManager::resume() {
+	if(!app) {
+		return;
+	}
+	ofxBaseApp * current = app.get();
+	enterSceneCall();
+	current->onResume();
+	leaveSceneCall();
+}
+
+bool ofxAppManager::backPressed() {
+	if(app) {
+		ofxBaseApp * current = app.get();
+		enterSceneCall();
+		const bool handled = current->onBackPressed();
+		leaveSceneCall();
+		if(handled || app.get() != current) {
+			return true;
+		}
+	}
+	if(backSceneId.empty() || getAppID() == backSceneId || !ofxSceneRegistry::has(backSceneId)) {
+		return false;
+	}
+	loadApp(backSceneId);
+	return true;
+}
+
 void ofxAppManager::gotMessage(ofMessage msg) {
 	if(app) {
 		ofxBaseApp * current = app.get();

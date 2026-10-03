@@ -8,7 +8,7 @@
 #import "ofxAppiOSLayer.h"
 
 
-@interface iOSAppViewController() <ofxAppiOSLayerAppDelegate, UIWebViewDelegate> {
+@interface iOSAppViewController() <ofxAppiOSLayerAppDelegate> {
     ofxAppiOSLayer * appLayer;
 }
 @end

@@ -15,6 +15,12 @@ public:
 	void draw() override {}
 	void onEnter() override { enterCount++; }
 	void onExit(float) override { exitCount++; }
+	void onPause() override { pauseCount++; }
+	void onResume() override { resumeCount++; }
+	bool onBackPressed() override {
+		backCount++;
+		return handleBack;
+	}
 
 	bool hasEnded() const override { return ended; }
 	std::string nextAppName() const override { return "TestSceneB"; }
@@ -27,6 +33,10 @@ public:
 	static int setupCount;
 	static int enterCount;
 	static int exitCount;
+	static int pauseCount;
+	static int resumeCount;
+	static int backCount;
+	static bool handleBack;
 	int frames = 0;
 	bool ended = false;
 };

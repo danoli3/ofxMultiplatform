@@ -64,12 +64,16 @@ void ofxAppiOSLayer::touchCancelled(ofTouchEventArgs & touch){
 
 //--------------------------------------------------------------
 void ofxAppiOSLayer::lostFocus(){
-    //manager->lostFocus();
+    if(manager) {
+        manager->pause();
+    }
 }
 
 //--------------------------------------------------------------
 void ofxAppiOSLayer::gotFocus(){
-    //manager->gotFocus();
+    if(manager) {
+        manager->resume();
+    }
 }
 
 //--------------------------------------------------------------

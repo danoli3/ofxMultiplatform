@@ -12,6 +12,10 @@ void resetSceneCounters() {
 	TestSceneA::setupCount = 0;
 	TestSceneA::enterCount = 0;
 	TestSceneA::exitCount = 0;
+	TestSceneA::pauseCount = 0;
+	TestSceneA::resumeCount = 0;
+	TestSceneA::backCount = 0;
+	TestSceneA::handleBack = false;
 	TestSceneB::setupCount = 0;
 	TestSceneB::enterCount = 0;
 	TestSceneB::exitCount = 0;
@@ -176,6 +180,36 @@ void ofApp::run() {
 		mgr.killApp();
 		ofxTestEq(mgr.getAppID(), std::string(""), "killApp clears current");
 		mgr.exit();
+	}
+
+	// ------------------------------------------------------------------
+	// Pause, resume, and back
+	// ------------------------------------------------------------------
+	{
+		resetSceneCounters();
+		ofxAppManager mgr;
+		mgr.autoBoot = false;
+		mgr.takeSnapShot = false;
+		mgr.defaultFadeIn = 0.f;
+		mgr.defaultFadeOut = 0.f;
+		mgr.backSceneId = "TestSceneB";
+		mgr.setup();
+		mgr.loadApp("TestSceneA");
+		pump(mgr, 1);
+		mgr.pause();
+		mgr.resume();
+		ofxTestEq(TestSceneA::pauseCount, 1, "pause reaches the scene");
+		ofxTestEq(TestSceneA::resumeCount, 1, "resume reaches the scene");
+
+		TestSceneA::handleBack = true;
+		ofxTest(mgr.backPressed(), "scene can consume back");
+		ofxTestEq(mgr.getAppID(), std::string("TestSceneA"), "consumed back stays on the scene");
+		TestSceneA::handleBack = false;
+
+		ofxTest(mgr.backPressed(), "back returns to backSceneId");
+		ofxTestEq(mgr.getAppID(), std::string("TestSceneB"), "back loads the home scene");
+		ofxTest(!mgr.backPressed(), "back on the home scene is not handled");
+		ofxTestEq(mgr.getAppID(), std::string("TestSceneB"), "unhandled back leaves the home scene");
 	}
 
 	ofLogNotice("ofxMultiPlatformTests") << "system tests finished";
