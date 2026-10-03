@@ -203,4 +203,41 @@ EOF
 		echo "==> excluded src/OSX and src/iOS from the Linux makefile"
 	fi
 fi
+
+# The iOS template already builds mediaAssets/LaunchScreen.storyboard. This
+# repo has another LaunchScreen.storyboard under src/iOS, and both compile to
+# LaunchScreen.storyboardc. Keep the project one.
+if [[ "$PLATFORM" == "ios" ]]; then
+	python3 - "$PROJECT_DIR" <<'PY'
+import json, sys
+from pathlib import Path
+
+project = Path(sys.argv[1])
+pbx = next(project.glob("*.xcodeproj/project.pbxproj"), None)
+if pbx is None:
+    sys.exit("iOS project.pbxproj not found")
+data = json.loads(pbx.read_text())
+objects = data.get("objects", {})
+drop_refs = set()
+for obj in objects.values():
+    if obj.get("isa") != "PBXGroup" or obj.get("path") != "mediaAssets":
+        continue
+    for child in obj.get("children", []):
+        ref = objects.get(child, {})
+        if ref.get("isa") == "PBXFileReference" and ref.get("path") == "LaunchScreen.storyboard":
+            drop_refs.add(child)
+drop_builds = {
+    bid for bid, obj in objects.items()
+    if obj.get("isa") == "PBXBuildFile" and obj.get("fileRef") in drop_refs
+}
+if not drop_builds:
+    sys.exit("template LaunchScreen.storyboard was not in the iOS project")
+for obj in objects.values():
+    files = obj.get("files")
+    if isinstance(files, list):
+        obj["files"] = [item for item in files if item not in drop_builds]
+pbx.write_text(json.dumps(data, indent=2) + "\n")
+print(f"==> kept src LaunchScreen.storyboard, dropped {len(drop_builds)} template build file(s)")
+PY
+fi
 echo "==> Project Generator updated ${PROJECT_DIR}"
