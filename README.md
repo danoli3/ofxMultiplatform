@@ -141,6 +141,7 @@ src/
   main.cpp     desktop entry (or platform main)
 test/          headless system tests (ofxUnitTests + ofAppNoWindow)
 .github/workflows/ci.yml
+.github/workflows/pg-nightly.yml
 ```
 
 ## Tests & CI
@@ -163,5 +164,7 @@ GitHub Actions (`.github/workflows/ci.yml`) on push/PR:
 4. Runs tests (exit code = failures)
 
 Manual run: **Actions → CI → Run workflow** (optional OF ref / libs tag).
+
+A second workflow (`.github/workflows/pg-nightly.yml`) downloads the openFrameworks **nightly** release package, runs the Project Generator command-line tool, and compiles this app on Linux, Windows, and macOS. It does not run the unit tests. Manual run: **Actions → PG nightly → Run workflow**.
 
 See [test/README.md](test/README.md).

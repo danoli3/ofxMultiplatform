@@ -1,0 +1,126 @@
+name: PG nightly
+
+# Compile test of this template against a packaged openFrameworks release.
+# Downloads the nightly release (not a git checkout), runs the Project Generator
+# CLI, and builds Linux, Windows, and macOS. Unit tests stay in ci.yml.
+
+on:
+  push:
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+  pull_request:
+    paths-ignore:
+      - "**.md"
+      - "LICENSE"
+  workflow_dispatch:
+    inputs:
+      of_release:
+        description: "openFrameworks release tag"
+        required: false
+        default: "nightly"
+      pg_release:
+        description: "projectGenerator release tag (CLI fallback)"
+        required: false
+        default: "nightly"
+
+concurrency:
+  group: pg-nightly-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  OF_RELEASE: ${{ github.event.inputs.of_release || 'nightly' }}
+  PG_RELEASE: ${{ github.event.inputs.pg_release || 'nightly' }}
+  GH_TOKEN: ${{ github.token }}
+  OF_JOBS: 2
+
+jobs:
+  linux64:
+    name: pg · linux64 · ${{ github.event.inputs.of_release || 'nightly' }}
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - name: Checkout ofxMultiPlatform
+        uses: actions/checkout@v4
+
+      - name: Download openFrameworks nightly
+        run: bash scripts/ci/fetch_of_nightly.sh '*_linux64_gcc6_release.tar.gz'
+
+      - name: Install OF Linux dependencies
+        run: sudo "${OF_ROOT}/scripts/linux/ubuntu/install_dependencies.sh" -y
+
+      - name: Run Project Generator
+        run: bash scripts/ci/run_project_generator.sh linux64
+
+      - name: Build Release
+        run: |
+          set -euo pipefail
+          cd "${PROJECT_DIR}"
+          make -j"${OF_JOBS}" Release
+          test -x bin/ofxMultiPlatform
+          echo "built $(pwd)/bin/ofxMultiPlatform"
+
+  windows:
+    name: pg · windows · ${{ github.event.inputs.of_release || 'nightly' }}
+    # windows-2022 has the v143 toolset the openFrameworks "vs" template uses.
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - name: Checkout ofxMultiPlatform
+        uses: actions/checkout@v4
+
+      - name: Download openFrameworks nightly
+        shell: bash
+        run: bash scripts/ci/fetch_of_nightly.sh '*_vs_64_release.zip'
+
+      - name: Run Project Generator
+        shell: bash
+        run: bash scripts/ci/run_project_generator.sh vs
+
+      - name: Build Release
+        shell: bash
+        run: |
+          set -euo pipefail
+          vswhere="/c/Program Files (x86)/Microsoft Visual Studio/Installer/vswhere.exe"
+          raw="$("$vswhere" -latest -products '*' -requires Microsoft.Component.MSBuild -find 'MSBuild\**\Bin\MSBuild.exe')"
+          raw="${raw%%$'\r'*}"
+          raw="${raw%%$'\n'*}"
+          msbuild="$(cygpath -u "$raw")"
+          sln="$(cygpath -w "${PROJECT_DIR}/ofxMultiPlatform.sln")"
+          echo "MSBuild ${msbuild}"
+          echo "Solution ${sln}"
+          export MSYS_NO_PATHCONV=1
+          export MSYS2_ARG_CONV_EXCL='*'
+          "$msbuild" "$sln" /p:Configuration=Release /p:Platform=x64 /m /v:minimal
+          test -f "${PROJECT_DIR}/bin/ofxMultiPlatform.exe"
+          echo "built ${PROJECT_DIR}/bin/ofxMultiPlatform.exe"
+
+  macos:
+    name: pg · macOS · ${{ github.event.inputs.of_release || 'nightly' }}
+    runs-on: macos-15
+    timeout-minutes: 120
+    steps:
+      - name: Checkout ofxMultiPlatform
+        uses: actions/checkout@v4
+
+      - name: Download openFrameworks nightly
+        run: bash scripts/ci/fetch_of_nightly.sh '*_osx_release.tar.gz'
+
+      - name: Run Project Generator
+        run: bash scripts/ci/run_project_generator.sh osx
+
+      - name: Build Release
+        run: |
+          set -euo pipefail
+          cd "${PROJECT_DIR}"
+          xcodebuild -project ofxMultiPlatform.xcodeproj -list
+          xcodebuild \
+            -project ofxMultiPlatform.xcodeproj \
+            -target ofxMultiPlatform \
+            -configuration Release \
+            CODE_SIGNING_ALLOWED=NO \
+            CODE_SIGNING_REQUIRED=NO \
+            CODE_SIGN_IDENTITY="-" \
+            MACOSX_DEPLOYMENT_TARGET=12.0
+          test -d bin/ofxMultiPlatform.app
+          echo "built $(pwd)/bin/ofxMultiPlatform.app"
