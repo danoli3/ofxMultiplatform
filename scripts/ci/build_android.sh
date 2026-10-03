@@ -114,6 +114,38 @@ if cmake_version not in text:
     sys.exit(f"CMake version pin not found in {gradle}")
 # The runner image ships this CMake with the Android SDK. 3.22.1 is not installed.
 text = text.replace(cmake_version, "version '3.31.5'", 1)
+# ofxXmlSettings keeps tinyxml.h and its .cpp files directly in libs/.
+# The template only searches libs/<name>/include and addon/src.
+libs_walker = """\t\t\t\taddonIncludeDirs.add(includeDir.absolutePath)
+\t\t\t}
+\t\t}
+\t}
+}"""
+libs_walker_fixed = """\t\t\t\taddonIncludeDirs.add(includeDir.absolutePath)
+\t\t\t}
+\t\t}
+\t\tdef libsHasHeaders = false
+\t\tlibsDir.eachFile { file ->
+\t\t\tif (!file.isFile()) {
+\t\t\t\treturn
+\t\t\t}
+\t\t\tif (file.name.endsWith(".h") || file.name.endsWith(".hpp")) {
+\t\t\t\tlibsHasHeaders = true
+\t\t\t}
+\t\t\tif (file.name.endsWith(".cpp") || file.name.endsWith(".c")) {
+\t\t\t\tprintln "Found libs C/CPP source: ${file}"
+\t\t\t\taddonSourceFiles.add(file.absolutePath)
+\t\t\t}
+\t\t}
+\t\tif (libsHasHeaders) {
+\t\t\tprintln "Found libs include: ${libsDir}"
+\t\t\taddonIncludeDirs.add(libsDir.absolutePath)
+\t\t}
+\t}
+}"""
+if libs_walker not in text:
+    sys.exit("addon libs walker not found in ofApp/build.gradle")
+text = text.replace(libs_walker, libs_walker_fixed, 1)
 gradle.write_text(text)
 
 cmake_sh = of_root / "libs/openFrameworksCompiled/project/android/cmake.sh"
