@@ -35,17 +35,6 @@ void ofxAppAndroidLayer::update(){
 
 //--------------------------------------------------------------
 void ofxAppAndroidLayer::draw(){
-	if(bCanReadFromDataFolder == false) {
-        int timeSinceStart = ofGetSeconds();
-        if(timeSinceStart % 2) {
-            ofSetColor(255, 0, 0);
-        } else {
-            ofSetColor(0, 0, 0);
-        }
-        ofRect(0, 0, ofGetWidth(), ofGetHeight());
-        ofDrawBitmapStringHighlight("Critical Error: Could not load Data Folder...", ofPoint(ofGetWidth()/2-150, ofGetHeight()/2-40), ofColor::black, ofColor::red);
-        return;
-    }
 	manager->draw();
 }
 
