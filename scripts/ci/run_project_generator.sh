@@ -166,10 +166,10 @@ echo "==> platform ${PLATFORM}"
 log="${RUNNER_TEMP:-/tmp}/pg-nightly.log"
 set +e
 if [[ "${RUNNER_OS:-}" == "Windows" ]]; then
-	# Git Bash rewrites leading-slash arguments. The Windows CLI uses /flags.
-	export MSYS_NO_PATHCONV=1
-	export MSYS2_ARG_CONV_EXCL='*'
-	"$PG" "/ofPath=$(native_path "$OF_ROOT")" "/platforms=${PLATFORM}" "/verbose" "$(native_path "$PROJECT_DIR")" | tee "$log"
+	# Git Bash rewrites one leading slash into a drive path, so /ofPath=D:\a\...
+	# arrives as D:\ofPath=D:\a\.... A second slash is stripped back to one and
+	# is not rewritten. MSYS_NO_PATHCONV did not stop the rewrite on the runner.
+	"$PG" "//ofPath=$(native_path "$OF_ROOT")" "//platforms=${PLATFORM}" "//verbose" "$(native_path "$PROJECT_DIR")" | tee "$log"
 else
 	"$PG" -o"$OF_ROOT" -p"$PLATFORM" -v "$PROJECT_DIR" | tee "$log"
 fi
@@ -178,5 +178,24 @@ set -e
 if [[ "$status" -ne 0 ]] || grep -q 'EXIT_FAILURE' "$log"; then
 	echo "error: Project Generator failed (exit ${status})" >&2
 	exit 1
+fi
+
+# Project Generator replaces config.make from the platform template, so the
+# Linux exclusions in the repo copy do not survive this update.
+if [[ "$PLATFORM" == "linux64" || "$PLATFORM" == "linux" ]]; then
+	make_file="${PROJECT_DIR}/config.make"
+	if ! grep -q 'src/iOS/%' "$make_file" 2>/dev/null; then
+		cat >> "$make_file" <<'EOF'
+
+# Linux g++ has no Objective-C++ frontend (cc1objplus).
+ifeq ($(shell uname -s),Linux)
+PROJECT_EXCLUSIONS += $(PROJECT_ROOT)/src/OSX
+PROJECT_EXCLUSIONS += $(PROJECT_ROOT)/src/OSX/%
+PROJECT_EXCLUSIONS += $(PROJECT_ROOT)/src/iOS
+PROJECT_EXCLUSIONS += $(PROJECT_ROOT)/src/iOS/%
+endif
+EOF
+		echo "==> excluded src/OSX and src/iOS from the Linux makefile"
+	fi
 fi
 echo "==> Project Generator updated ${PROJECT_DIR}"

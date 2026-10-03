@@ -61,7 +61,14 @@ OF_ROOT = ../../..
 #
 #   Note: Leave a leading space when adding list items with the += operator
 ################################################################################
-# PROJECT_EXCLUSIONS =
+# Linux g++ selects the Objective-C++ frontend for every .mm file and does not
+# ship cc1objplus. Apple sources stay in the tree for the macOS and iOS projects.
+ifeq ($(shell uname -s),Linux)
+PROJECT_EXCLUSIONS += $(PROJECT_ROOT)/src/OSX
+PROJECT_EXCLUSIONS += $(PROJECT_ROOT)/src/OSX/%
+PROJECT_EXCLUSIONS += $(PROJECT_ROOT)/src/iOS
+PROJECT_EXCLUSIONS += $(PROJECT_ROOT)/src/iOS/%
+endif
 
 ################################################################################
 # PROJECT LINKER FLAGS

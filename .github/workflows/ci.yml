@@ -39,24 +39,6 @@ jobs:
     env:
       TARGET: linux64
     steps:
-      - name: Cache apt packages
-        uses: awalsh128/cache-apt-packages-action@v1.6.0
-        with:
-          packages: >-
-            make curl wget ca-certificates
-            g++ freeglut3-dev libasound2-dev libxmu-dev libxxf86vm-dev
-            libgl1-mesa-dev libglu1-mesa-dev libraw1394-dev libudev-dev
-            libdrm-dev libglew-dev libopenal-dev libsndfile1-dev
-            libfreeimage-dev libcairo2-dev libfreetype6-dev libpulse-dev
-            libusb-1.0-0-dev libgtk-3-dev libopencv-dev libassimp-dev
-            librtaudio-dev libglfw3-dev liburiparser-dev libcurl4-openssl-dev
-            libpugixml-dev libxcursor-dev libxi-dev libxinerama-dev
-            libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev
-            gstreamer1.0-libav gstreamer1.0-plugins-base gstreamer1.0-plugins-good
-            libjack-jackd2-dev libssl-dev
-            xvfb
-          version: 1.0
-
       - name: Checkout ofxMultiPlatform
         uses: actions/checkout@v4
         with:
