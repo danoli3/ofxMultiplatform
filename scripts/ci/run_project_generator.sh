@@ -166,17 +166,14 @@ echo "==> platform ${PLATFORM}"
 log="${RUNNER_TEMP:-/tmp}/pg-nightly.log"
 set +e
 if [[ "${RUNNER_OS:-}" == "Windows" ]]; then
-	# Git Bash rewrites arguments that start with / or // before a native exe
-	# sees them (/ofPath=D:\a\... arrives as D:\ofPath=D:\a\...). MSYS_NO_PATHCONV
-	# did not stop that on the runner. The flags live in a cmd file instead.
-	pg_win="$(native_path "$PG")"
+	# This CLI rewrites arguments that start with / into drive paths, so
+	# /ofPath=D:\a\... arrives as D:\ofPath=D:\a\... and is used as the
+	# project path. The parser accepts the same dash options as on Unix.
 	of_win="$(native_path "$OF_ROOT")"
 	proj_win="$(native_path "$PROJECT_DIR")"
-	bat="${RUNNER_TEMP:-/tmp}/run-pg.cmd"
-	printf '@"%s" /ofPath="%s" /platforms=%s /verbose "%s"\r\n' \
-		"$pg_win" "$of_win" "$PLATFORM" "$proj_win" > "$bat"
-	echo "==> $(tr -d '\r' < "$bat")"
-	cmd.exe //c "$(native_path "$bat")" | tee "$log"
+	export PG_OF_PATH="$of_win"
+	echo "==> PG_OF_PATH=${PG_OF_PATH}"
+	"$PG" --ofPath "$of_win" --platforms "$PLATFORM" --verbose "$proj_win" | tee "$log"
 else
 	"$PG" -o"$OF_ROOT" -p"$PLATFORM" -v "$PROJECT_DIR" | tee "$log"
 fi
