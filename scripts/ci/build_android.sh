@@ -146,6 +146,15 @@ libs_walker_fixed = """\t\t\t\taddonIncludeDirs.add(includeDir.absolutePath)
 if libs_walker not in text:
     sys.exit("addon libs walker not found in ofApp/build.gradle")
 text = text.replace(libs_walker, libs_walker_fixed, 1)
+# Quotes around the semicolon list survive into CMake and stick to the
+# first and last path, so tinyxml.h is searched for under ofApp/src/"...
+quoted_include = 'def cmakeIncludeArgs = "-DADDON_INCLUDE_DIRS=\\"" + addonIncludeDirs.join(";") + "\\""'
+plain_include = 'def cmakeIncludeArgs = "-DADDON_INCLUDE_DIRS=" + addonIncludeDirs.join(";")'
+quoted_libs = 'def cmakeLibArgs = "-DADDON_LIBS=\\"" + addonLibs.join(";") + "\\""'
+plain_libs = 'def cmakeLibArgs = "-DADDON_LIBS=" + addonLibs.join(";")'
+if quoted_include not in text or quoted_libs not in text:
+    sys.exit("quoted CMake addon arguments not found in ofApp/build.gradle")
+text = text.replace(quoted_include, plain_include, 1).replace(quoted_libs, plain_libs, 1)
 gradle.write_text(text)
 
 cmake_sh = of_root / "libs/openFrameworksCompiled/project/android/cmake.sh"
@@ -174,6 +183,17 @@ cmake_lists = project / "ofApp/src/CMakeLists.txt"
 if not cmake_lists.is_file():
     sys.exit(f"CMakeLists missing: {cmake_lists}")
 cl = cmake_lists.read_text()
+# Drop quote characters left on addon -D list entries.
+strip_dir = 'string(REPLACE [=["]=] "" DIR "${DIR}")\n        include_directories(${DIR})'
+if "include_directories(${DIR})" not in cl:
+    sys.exit("addon include_directories call not found")
+if 'REPLACE [=["]=] "" DIR' not in cl:
+    cl = cl.replace("include_directories(${DIR})", strip_dir, 1)
+strip_lib = 'string(REPLACE [=["]=] "" LIB "${LIB}")\n            list(APPEND FILTERED_ADDON_LIBS ${LIB})'
+if "list(APPEND FILTERED_ADDON_LIBS ${LIB})" not in cl:
+    sys.exit("addon lib append not found")
+if 'REPLACE [=["]=] "" LIB' not in cl:
+    cl = cl.replace("list(APPEND FILTERED_ADDON_LIBS ${LIB})", strip_lib, 1)
 marker = "# ofxMultiPlatform source include dirs"
 if marker not in cl:
     cl += """
