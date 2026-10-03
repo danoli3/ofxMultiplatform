@@ -229,7 +229,8 @@ export NUM_CORES="${OF_JOBS:-2}"
 cd "$PROJECT_DIR"
 java -classpath gradle/wrapper/gradle-wrapper.jar org.gradle.wrapper.GradleWrapperMain \
 	assembleDebug --no-daemon --stacktrace
-apk="$(find "$PROJECT_DIR" -path '*/outputs/apk/debug/*.apk' -type f -print -quit)"
+# productFlavors (playstore) nest the debug apk under outputs/apk/<flavor>/debug/
+apk="$(find "$PROJECT_DIR" -path '*/outputs/apk/*' -name '*debug*.apk' -type f -print -quit)"
 if [[ -z "$apk" ]]; then
 	echo "error: debug apk was not produced" >&2
 	find "$PROJECT_DIR" -name '*.apk' -print >&2 || true
