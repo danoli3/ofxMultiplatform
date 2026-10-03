@@ -100,13 +100,7 @@ void ofxAppiOSLayer::gameControllerEvent(GameControllerEvent & event) {
 
 void ofxAppiOSLayer::triggerEvent(ofxMultiPlatformEvent &e) {
     // manage event for iOS.
-
-    if(e.packetID == 101) {
-        if(delegate != nil) {
-            [delegate launchPlayVideo:@"video"];
-        }
-    }
-    
+    (void)e;
 }
 
 #endif
