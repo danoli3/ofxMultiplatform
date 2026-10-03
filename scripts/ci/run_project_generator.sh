@@ -166,10 +166,17 @@ echo "==> platform ${PLATFORM}"
 log="${RUNNER_TEMP:-/tmp}/pg-nightly.log"
 set +e
 if [[ "${RUNNER_OS:-}" == "Windows" ]]; then
-	# Git Bash rewrites one leading slash into a drive path, so /ofPath=D:\a\...
-	# arrives as D:\ofPath=D:\a\.... A second slash is stripped back to one and
-	# is not rewritten. MSYS_NO_PATHCONV did not stop the rewrite on the runner.
-	"$PG" "//ofPath=$(native_path "$OF_ROOT")" "//platforms=${PLATFORM}" "//verbose" "$(native_path "$PROJECT_DIR")" | tee "$log"
+	# Git Bash rewrites arguments that start with / or // before a native exe
+	# sees them (/ofPath=D:\a\... arrives as D:\ofPath=D:\a\...). MSYS_NO_PATHCONV
+	# did not stop that on the runner. The flags live in a cmd file instead.
+	pg_win="$(native_path "$PG")"
+	of_win="$(native_path "$OF_ROOT")"
+	proj_win="$(native_path "$PROJECT_DIR")"
+	bat="${RUNNER_TEMP:-/tmp}/run-pg.cmd"
+	printf '@"%s" /ofPath="%s" /platforms=%s /verbose "%s"\r\n' \
+		"$pg_win" "$of_win" "$PLATFORM" "$proj_win" > "$bat"
+	echo "==> $(tr -d '\r' < "$bat")"
+	cmd.exe //c "$(native_path "$bat")" | tee "$log"
 else
 	"$PG" -o"$OF_ROOT" -p"$PLATFORM" -v "$PROJECT_DIR" | tee "$log"
 fi
